@@ -1,0 +1,98 @@
+---
+// Figma: footer（PC：ロゴ左・ナビ横並び ／ SP：中央揃えの縦並び）
+import LogoWhite from '@/assets/icons/logo-white.svg';
+import { FOOTER_NAV, SITE } from '@/lib/site';
+---
+
+<footer class="footer">
+  <div class="footer__body container">
+    <a class="footer__logo" href="/">
+      <LogoWhite class="footer__logo-img" aria-hidden="true" />
+      <span class="visually-hidden">{SITE.name} トップページ</span>
+    </a>
+    <nav class="footer__nav" aria-label="フッター">
+      <ul class="footer__nav-list">
+        {
+          FOOTER_NAV.map((item) => (
+            <li class="footer__nav-item">
+              <a class="footer__nav-link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <p class="footer__copy"><small>&copy; {SITE.name} All rights reserved.</small></p>
+  </div>
+</footer>
+
+<style lang="scss">
+  .footer {
+    padding-block: var(--space-8) var(--space-16);
+    color: #fff;
+    background: var(--color-primary-dark);
+
+    &__body {
+      display: grid;
+      justify-items: center;
+      gap: var(--space-4);
+      text-align: center;
+
+      @include mq(md) {
+        grid-template-columns: auto 1fr;
+        justify-items: start;
+        align-items: center;
+        gap: var(--space-6) var(--space-12);
+        text-align: left;
+      }
+    }
+
+    &__logo {
+      display: block;
+      padding-block: var(--space-2);
+    }
+
+    &__logo-img {
+      width: rem(254);
+    }
+
+    &__nav-list {
+      display: grid;
+      padding: 0;
+      list-style: none;
+
+      @include mq(md) {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: var(--space-8);
+      }
+    }
+
+    &__nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: rem(75);
+      font-size: var(--font-size-sm);
+      color: #fff;
+      text-decoration: none;
+
+      @include mq(md) {
+        min-height: rem(44);
+      }
+
+      @include hover {
+        text-decoration: underline;
+      }
+    }
+
+    &__copy {
+      font-size: var(--font-size-sm);
+
+      @include mq(md) {
+        grid-column: 2;
+      }
+    }
+  }
+</style>

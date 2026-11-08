@@ -1,0 +1,30 @@
+---
+// ステマ規制（景品表示法）対応：記事冒頭に広告である旨を明示する
+---
+
+<p class="pr-notice">
+  <span class="pr-notice__label">PR</span>
+  本記事にはプロモーション（広告）が含まれています。
+</p>
+
+<style lang="scss">
+  .pr-notice {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    background: var(--color-bg-subtle);
+    border-radius: var(--radius-sm);
+
+    &__label {
+      flex-shrink: 0;
+      padding: 0 var(--space-2);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-bg);
+      background: var(--color-text-muted);
+      border-radius: var(--radius-sm);
+    }
+  }
+</style>

@@ -1,0 +1,126 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import PrNotice from '@/components/PrNotice.astro';
+import { SITE, formatDate } from '@/lib/site';
+
+interface Props {
+  entry: CollectionEntry<'articles'>;
+}
+
+const { entry } = Astro.props;
+const { title, description, publishedAt, updatedAt, category, pr, thumbnail, thumbnailAlt } = entry.data;
+const url = new URL(Astro.url.pathname, Astro.site).href;
+
+// SNS 共有用の画像（og:image）：サムネイルから 1200×630 を中央で切り出して自動生成。
+// WebP 非対応の SNS があるため JPG で出力する。サムネイルが無い記事はサイト共通の画像を使う
+const ogImage = thumbnail
+  ? (await getImage({ src: thumbnail, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src
+  : undefined;
+
+const crumbs = [
+  { href: '/', label: 'ホーム' },
+  { href: '/articles/', label: '記事一覧' },
+  { label: title },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: publishedAt.toISOString(),
+  dateModified: (updatedAt ?? publishedAt).toISOString(),
+  author: { '@type': 'Organization', name: SITE.author },
+  publisher: { '@type': 'Organization', name: SITE.name },
+  mainEntityOfPage: url,
+  ...(ogImage && { image: new URL(ogImage, Astro.site).href }),
+};
+---
+
+<BaseLayout title={title} description={description} ogType="article" ogImage={ogImage}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article class="article container container--narrow">
+    <Breadcrumb items={crumbs} />
+
+    <header class="article__header">
+      <p class="article__category">{category}</p>
+      <h1 class="article__title">{title}</h1>
+      <p class="article__meta">
+        <span>公開日：<time datetime={publishedAt.toISOString()}>{formatDate(publishedAt)}</time></span>
+        {
+          updatedAt && (
+            <span>
+              更新日：<time datetime={updatedAt.toISOString()}>{formatDate(updatedAt)}</time>
+            </span>
+          )
+        }
+      </p>
+      {pr && <PrNotice />}
+    </header>
+
+    {
+      thumbnail && (
+        <Image
+          class="article__thumb"
+          src={thumbnail}
+          alt={thumbnailAlt ?? ''}
+          widths={[400, 760, 1520]}
+          sizes="(width >= 808px) 760px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      )
+    }
+
+    <div class="article__body prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style lang="scss">
+  .article {
+    padding-top: var(--space-6);
+
+    &__header {
+      display: grid;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+    }
+
+    &__category {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-primary);
+    }
+
+    &__title {
+      font-size: var(--font-size-h1);
+    }
+
+    &__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+    }
+
+    &__thumb {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      margin-top: var(--space-8);
+      object-fit: cover;
+      border-radius: var(--radius-md);
+    }
+
+    &__body {
+      margin-top: var(--space-12);
+    }
+  }
+</style>

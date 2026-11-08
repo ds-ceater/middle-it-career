@@ -1,0 +1,57 @@
+@use 'abstracts' as *;
+
+html {
+  scroll-padding-top: var(--space-4);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  // 中身が少ないページでもフッターを画面の最下部に置く（main が残りの高さを埋める）
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-break: strict;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: var(--line-height-heading);
+}
+
+a {
+  color: var(--color-primary);
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  @include focus-ring;
+}
+
+// 共通レイアウト（BEM の Block として扱う）
+.container {
+  width: min(100% - var(--container-gutter) * 2, var(--container-max));
+  margin-inline: auto;
+
+  &--narrow {
+    width: min(100% - var(--container-gutter) * 2, var(--container-narrow));
+  }
+}
+
+.visually-hidden {
+  @include visually-hidden;
+}

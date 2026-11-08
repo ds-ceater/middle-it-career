@@ -1,0 +1,39 @@
+---
+// 運営者情報・プライバシーポリシーなど固定ページ用
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+
+interface Meta {
+  title: string;
+  description?: string;
+}
+// .astro から使う場合は props、.md/.mdx の layout として使う場合は frontmatter で渡される
+type Props = Meta | { frontmatter: Meta };
+
+const { title, description } = 'frontmatter' in Astro.props ? Astro.props.frontmatter : Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page container container--narrow">
+    <Breadcrumb items={[{ href: '/', label: 'ホーム' }, { label: title }]} />
+    <h1 class="page__title">{title}</h1>
+    <div class="page__body prose">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>
+
+<style lang="scss">
+  .page {
+    padding-top: var(--space-6);
+
+    &__title {
+      margin-top: var(--space-6);
+      font-size: var(--font-size-h1);
+    }
+
+    &__body {
+      margin-top: var(--space-8);
+    }
+  }
+</style>

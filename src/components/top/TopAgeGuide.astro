@@ -1,0 +1,129 @@
+---
+// Figma: age-guide（年代別の転職ガイド）
+// 各カードの id はヘッダーナビ・メインビジュアルからのページ内リンク先
+interface Card {
+  id: string;
+  num: string;
+  rest: string;
+  desc: string;
+  /** 記事の URL。未設定のカードはボタンの代わりに「準備中」と表示する */
+  href?: string;
+}
+
+// 記事ができたら href を追加する
+const cards: Card[] = [
+  { id: 'age-40', num: '40', rest: '代の転職', desc: '経験と専門性を活かす', href: '/articles/40s-it-career-guide/' },
+  { id: 'age-50', num: '50', rest: '代の転職', desc: '実績と強みを即戦力にする', href: '/articles/50s-it-career-guide/' },
+  { id: 'age-55', num: '55', rest: '歳からのキャリア', desc: '再就職・独立を視野に', href: '/articles/it-career-after-55/' },
+];
+---
+
+<section class="age-guide" aria-labelledby="age-guide-title">
+  <div class="age-guide__inner container">
+    <h2 class="age-guide__title" id="age-guide-title">年代別の転職ガイド</h2>
+    <p class="age-guide__lead">年齢に応じた戦略で、次のキャリアを見つけましょう。</p>
+    <ul class="age-guide__list">
+      {
+        cards.map((card) => (
+          <li class="age-guide__card" id={card.id}>
+            <h3 class="age-guide__card-title" id={`${card.id}-title`}>
+              <span class="age-guide__card-num">{card.num}</span>
+              {card.rest}
+            </h3>
+            <p class="age-guide__card-desc">{card.desc}</p>
+            {card.href ? (
+              <a class="age-guide__card-btn" href={card.href} aria-describedby={`${card.id}-title`}>
+                詳しく見る
+              </a>
+            ) : (
+              <span class="age-guide__card-btn age-guide__card-btn--soon">記事は準備中です</span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style lang="scss">
+  .age-guide {
+    padding-block: var(--space-section);
+
+    &__title {
+      @include section-title;
+    }
+
+    &__lead {
+      @include section-lead;
+    }
+
+    &__list {
+      display: grid;
+      gap: var(--space-6);
+      margin-top: #{fluid(24, 48)};
+      padding: 0;
+      list-style: none;
+
+      @include mq(lg) {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-8);
+      }
+    }
+
+    &__card {
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-6) #{fluid(24, 32)};
+      background: var(--color-bg);
+      border: 3px solid var(--color-border-light);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+    }
+
+    &__card-title {
+      font-size: #{fluid(22, 30)};
+      font-weight: var(--font-weight-bold);
+      color: var(--color-primary-dark);
+    }
+
+    &__card-num {
+      font-size: #{fluid(34, 46)};
+      font-weight: var(--font-weight-black);
+      line-height: 1;
+    }
+
+    &__card-desc {
+      margin-block: var(--space-4);
+      font-size: #{fluid(16, 22)};
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text);
+    }
+
+    &__card-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: #{fluid(44, 56)};
+      margin-top: auto; // カードの高さが揃ったとき、ボタンを下端に揃える
+      font-weight: var(--font-weight-bold);
+      color: var(--color-primary-dark);
+      text-decoration: none;
+      background: var(--color-btn-soft);
+      border-radius: var(--radius-lg);
+      transition: background-color 0.2s;
+
+      &[href] {
+        @include hover {
+          background: var(--color-border-light);
+        }
+      }
+
+      &--soon {
+        font-weight: var(--font-weight-regular);
+        color: var(--color-text-muted);
+        background: none;
+        border: 2px dashed var(--color-border);
+      }
+    }
+  }
+</style>

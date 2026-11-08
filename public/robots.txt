@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: ドメイン確定後に差し替え
+Sitemap: https://example.com/sitemap-index.xml

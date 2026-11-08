@@ -1,0 +1,34 @@
+{
+  "name": "middle-it-career",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "format": "prettier --write .",
+    "new:article": "node scripts/new-article.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^8.1.3",
+    "@astrojs/react": "latest",
+    "@astrojs/sitemap": "latest",
+    "astro": "^7.4.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "prettier": "^3.0.0",
+    "prettier-plugin-astro": "latest",
+    "sass": "^1.80.0",
+    "typescript": "^5.6.0"
+  }
+}

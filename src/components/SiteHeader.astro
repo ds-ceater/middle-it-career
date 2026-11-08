@@ -1,0 +1,234 @@
+---
+// Figma: header（PC/SPで構造が違っても、DOMは1つにしてCSSで出し分ける）
+// PC（lg 以上）：ロゴ＋横並びナビ ／ SP：ロゴ＋ハンバーガー → 開くとナビが下に展開
+import Logo from '@/assets/icons/logo.svg';
+import { NAV, SITE } from '@/lib/site';
+---
+
+<header class="header">
+  <p class="header__caution">
+    <span class="container">本ページには広告が含まれています。</span>
+  </p>
+
+  <div class="header__inner container">
+    <a class="header__logo" href="/">
+      <Logo class="header__logo-img" aria-hidden="true" />
+      <span class="visually-hidden">{SITE.name}</span>
+    </a>
+
+    <button
+      class="header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="global-nav"
+      data-nav-toggle
+    >
+      <span class="header__toggle-bar" aria-hidden="true"></span>
+      <span class="visually-hidden" data-nav-label>
+        メニューを開く
+      </span>
+    </button>
+
+    <nav class="header__nav" id="global-nav" aria-label="グローバル">
+      <ul class="header__nav-list">
+        {NAV.map((item) => (
+          <li class="header__nav-item">
+            <a class="header__nav-link" href={item.href}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const label = toggle?.querySelector('[data-nav-label]');
+  const nav = document.getElementById('global-nav');
+
+  const setOpen = (open: boolean) => {
+    if (!toggle || !label) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    label.textContent = open ? 'メニューを閉じる' : 'メニューを開く';
+  };
+
+  toggle?.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  // ページ内リンクで移動したらメニューを閉じる
+  nav?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+</script>
+
+<style lang="scss">
+  .header {
+    position: relative;
+    z-index: 100;
+    background: var(--color-bg);
+
+    // PR表記（ステマ規制対応）
+    &__caution {
+      padding-block: var(--space-2);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.5;
+      color: #fff;
+      background: var(--color-primary-dark);
+
+      // 中の span に .container の幅を効かせる
+      :global(.container) {
+        display: block;
+      }
+    }
+
+    &__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+      min-height: #{fluid(80, 120)};
+    }
+
+    &__logo {
+      flex-shrink: 0;
+      display: block;
+      padding-block: var(--space-2);
+    }
+
+    &__logo-img {
+      width: #{fluid(220, 336)};
+    }
+
+    // SP: ハンバーガー
+    &__toggle {
+      position: relative;
+      flex-shrink: 0;
+      width: rem(44);
+      height: rem(44);
+      margin-right: rem(-6);
+      background: none;
+      border: 0;
+
+      @include mq(lg) {
+        display: none;
+      }
+    }
+
+    &__toggle-bar,
+    &__toggle-bar::before,
+    &__toggle-bar::after {
+      position: absolute;
+      left: 50%;
+      width: rem(32);
+      height: 2px;
+      background: var(--color-primary-dark);
+      translate: -50% 0;
+      transition:
+        rotate 0.2s,
+        translate 0.2s;
+    }
+
+    &__toggle-bar {
+      top: calc(50% - 1px);
+
+      &::before,
+      &::after {
+        content: '';
+      }
+
+      &::before {
+        translate: -50% rem(-11);
+      }
+
+      &::after {
+        translate: -50% rem(11);
+      }
+    }
+
+    &__toggle[aria-expanded='true'] &__toggle-bar {
+      background: transparent;
+
+      &::before {
+        translate: -50% 0;
+        rotate: 45deg;
+      }
+
+      &::after {
+        translate: -50% 0;
+        rotate: -45deg;
+      }
+    }
+
+    &__nav {
+      @include mq-down(lg) {
+        position: absolute;
+        inset: 100% 0 auto;
+        display: none;
+        background: var(--color-bg);
+        border-top: 1px solid var(--color-border-light);
+        box-shadow: var(--shadow-card);
+      }
+
+      @include mq(lg) {
+        flex: 0 1 rem(720);
+      }
+    }
+
+    &__toggle[aria-expanded='true'] + &__nav {
+      display: block;
+    }
+
+    &__nav-list {
+      padding: 0;
+      list-style: none;
+
+      @include mq(lg) {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-6);
+      }
+    }
+
+    &__nav-item {
+      @include mq-down(lg) {
+        border-bottom: 1px solid var(--color-border-light);
+      }
+    }
+
+    &__nav-link {
+      display: flex;
+      align-items: center;
+      min-height: rem(44);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.5;
+      color: var(--color-text);
+      text-decoration: none;
+
+      @include mq-down(lg) {
+        min-height: rem(68);
+        padding-inline: var(--container-gutter);
+      }
+
+      @include mq(lg) {
+        font-size: rem(15);
+        white-space: nowrap;
+      }
+
+      @include hover {
+        color: var(--color-primary);
+        text-decoration: underline;
+      }
+    }
+  }
+</style>

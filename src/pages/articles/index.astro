@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { getPublishedArticles } from '@/lib/articles';
+
+const articles = await getPublishedArticles();
+---
+
+<BaseLayout title="記事一覧" description="ミドルITキャリアの記事一覧です。">
+  <div class="archive container">
+    <Breadcrumb items={[{ href: '/', label: 'ホーム' }, { label: '記事一覧' }]} />
+    <h1 class="archive__title">記事一覧</h1>
+    {
+      articles.length > 0 ? (
+        <ul class="archive__list">
+          {articles.map((entry) => (
+            <li>
+              <ArticleCard entry={entry} headingLevel="h2" />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="archive__empty">記事は準備中です。</p>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style lang="scss">
+  .archive {
+    padding-top: var(--space-6);
+
+    &__title {
+      margin-top: var(--space-6);
+      font-size: var(--font-size-h1);
+    }
+
+    &__list {
+      display: grid;
+      gap: var(--space-6);
+      margin-top: var(--space-8);
+      padding: 0;
+      list-style: none;
+
+      @include mq(md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include mq(lg) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    &__empty {
+      margin-top: var(--space-8);
+    }
+  }
+</style>

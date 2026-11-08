@@ -1,0 +1,6 @@
+// グローバルCSS（BaseLayout で1回だけ読み込む）
+// コンポーネント固有のスタイルは各 .astro の <style lang="scss"> に書く
+@use 'base/tokens';
+@use 'base/reset';
+@use 'base/base';
+@use 'base/prose';

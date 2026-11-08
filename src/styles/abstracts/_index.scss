@@ -1,0 +1,5 @@
+// CSSを出力しないもの（変数・関数・mixin）だけを置く。
+// astro.config.mjs の additionalData で全SCSSに自動 @use される。
+@forward 'breakpoints';
+@forward 'functions';
+@forward 'mixins';

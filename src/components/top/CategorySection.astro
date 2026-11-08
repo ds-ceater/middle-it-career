@@ -1,0 +1,135 @@
+---
+// Figma: job-guide / work-guide / knowhow（同じ構成のため共通 Block「category-section」に切り出し）
+// セクション名は id（ページ内リンク用）として残す
+interface Tag {
+  label: string;
+  /** 記事の URL。未設定のタグはリンクにせず「準備中」と表示する */
+  href?: string;
+}
+
+interface Props {
+  id: string;
+  title: string;
+  lead: string;
+  tags: Tag[];
+  /** 「詳しく見る」のリンク先（カテゴリ一覧ページ）。未設定ならボタンを出さない */
+  moreHref?: string;
+  /** 背景色あり（Figma: job-guide / knowhow） */
+  tinted?: boolean;
+}
+
+const { id, title, lead, tags, moreHref, tinted = false } = Astro.props;
+const titleId = `${id}-title`;
+---
+
+<section
+  class:list={['category-section', { 'category-section--tinted': tinted }]}
+  id={id}
+  aria-labelledby={titleId}
+>
+  <div class="category-section__inner container">
+    <h2 class="category-section__title" id={titleId}>{title}</h2>
+    <p class="category-section__lead">{lead}</p>
+    <ul class="category-section__tag-list">
+      {
+        tags.map((tag) => {
+          const Tag = tag.href ? 'a' : 'div';
+          return (
+            <li>
+              <Tag class="category-section__tag" href={tag.href}>
+                {tag.label}
+                {!tag.href && <span class="category-section__soon">準備中</span>}
+              </Tag>
+            </li>
+          );
+        })
+      }
+    </ul>
+    {
+      moreHref && (
+        <p class="category-section__more">
+          <a class="category-section__more-btn" href={moreHref} aria-describedby={titleId}>
+            詳しく見る
+          </a>
+        </p>
+      )
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .category-section {
+    padding-block: var(--space-section);
+
+    &--tinted {
+      background: var(--color-bg-subtle);
+    }
+
+    &__title {
+      @include section-title;
+    }
+
+    &__lead {
+      @include section-lead;
+    }
+
+    &__tag-list {
+      display: grid;
+      gap: var(--space-4);
+      margin-top: #{fluid(24, 32)};
+      padding: 0;
+      list-style: none;
+
+      @include mq(md) {
+        // 列数はタグの数と画面幅に合わせて自動（PC：5個なら5列、4個なら4列）
+        grid-template-columns: repeat(auto-fit, minmax(rem(200), 1fr));
+      }
+    }
+
+    &__tag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: rem(60);
+      padding: var(--space-2) var(--space-4);
+      font-size: #{fluid(17, 18)};
+      font-weight: var(--font-weight-bold);
+      line-height: 1.4;
+      color: var(--color-primary-dark);
+      text-align: center;
+      text-decoration: none;
+      background: var(--color-bg);
+      border: 3px solid var(--color-border-light);
+      border-radius: var(--radius-full);
+      transition: border-color 0.2s;
+
+      &[href] {
+        @include hover {
+          border-color: var(--color-primary);
+        }
+      }
+
+      // 準備中（リンクなし）：文字を灰色に、「準備中」ラベルは常に下の行（タグの高さを揃える）
+      &:not([href]) {
+        flex-direction: column;
+        gap: var(--space-1);
+        color: var(--color-text-muted);
+      }
+    }
+
+    &__soon {
+      @include soon-badge;
+    }
+
+    &__more {
+      margin-top: var(--space-6);
+      text-align: center;
+    }
+
+    &__more-btn {
+      @include pill-button;
+      min-width: rem(184);
+      font-size: #{fluid(18, 20)};
+    }
+  }
+</style>

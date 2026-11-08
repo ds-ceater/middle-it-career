@@ -1,0 +1,66 @@
+@use 'abstracts' as *;
+
+// デザイントークン（Figma: middle-it-top のスクリーンショットから採取）
+// TODO: Figma Variables を取得できたら値と名前を揃える
+:root {
+  // Color
+  --color-primary: #005fc2; // Figma: blue
+  --color-primary-dark: #06376a; // Figma: navy（見出し・ボタン・ヘッダー帯・フッター）
+  // Figma のオレンジ（#ff8000 付近）は白文字とのコントラストが 2.5:1 で AA 未達のため暗めに調整。
+  // --color-accent は「大きい文字（19px 以上の太字）」専用（白文字で 3.3:1）。
+  // 通常サイズの文字を載せる場合は --color-accent-strong（白文字で 4.7:1）を使う。
+  --color-accent: #e06a00;
+  --color-accent-strong: #c24e00;
+  --color-text: #1f2328;
+  --color-text-muted: #57606a; // 白・グレー背景で 4.5:1 以上を維持
+  --color-bg: #ffffff;
+  --color-bg-subtle: #eff8fd; // Figma: pale-skyblue（セクション背景・悩みカード）
+  --color-bg-gray: #f4f4f4; // 運営者カード
+  --color-btn-soft: #eef4fb; // 年代別カードの「詳しく見る」
+  --color-border: #d0d7de;
+  --color-border-light: #dce7f2; // カード・タグの枠線
+  --color-focus: #ffbf47;
+
+  // Typography
+  // --font-noto-sans-jp は astro.config.mjs の fonts で生成（最適化済みフォールバック込み）
+  --font-family-base: var(--font-noto-sans-jp);
+  --font-size-sm: #{rem(14)};
+  --font-size-base: #{rem(16)};
+  --font-size-lg: #{fluid(18, 20)};
+  --font-size-lead: #{fluid(14, 22)}; // セクションのリード文
+  --font-size-h2: #{fluid(22, 40)};
+  --font-size-h1: #{fluid(26, 36)};
+  // Font weight（Noto Sans JP は可変フォント。使う太さを4種類に集約）
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+
+  // Figma: copy（Noto Sans JP / 20px / line-height 30px。太さ 600 は bold に集約）
+  --font-size-copy: #{rem(20)};
+  --line-height-copy: 1.5;
+  --font-weight-copy: var(--font-weight-bold);
+  --line-height-base: 1.8;
+  --line-height-heading: 1.4;
+
+  // Spacing
+  --space-1: #{rem(4)};
+  --space-2: #{rem(8)};
+  --space-3: #{rem(12)};
+  --space-4: #{rem(16)};
+  --space-6: #{rem(24)};
+  --space-8: #{rem(32)};
+  --space-12: #{rem(48)};
+  --space-16: #{rem(64)};
+  --space-section: #{fluid(64, 96)}; // セクションの上下余白
+
+  // Layout
+  --container-max: #{rem(1200)};
+  --container-narrow: #{rem(760)};
+  --container-gutter: #{fluid(24, 32)};
+  --radius-sm: #{rem(4)};
+  --radius-md: #{rem(8)};
+  --radius-lg: #{rem(12)};
+  --radius-full: 9999px;
+  --shadow-card: 0 #{rem(2)} #{rem(10)} rgb(6 55 106 / 0.1);
+}

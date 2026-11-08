@@ -1,0 +1,28 @@
+---
+import { render } from 'astro:content';
+import ArticleLayout from '@/layouts/ArticleLayout.astro';
+import AffiliateLink from '@/components/AffiliateLink.astro';
+import PrNotice from '@/components/PrNotice.astro';
+import { getPublishedArticles } from '@/lib/articles';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+  return articles.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+
+// 広告リンクがあるのに PR 表記がない記事はビルドを止める（ステマ規制対策）
+// MDX のコメント {/* … */} の中に書いた例は対象外
+const bodyWithoutComments = entry.body?.replace(/\{\/\*[\s\S]*?\*\/\}/g, '') ?? '';
+if (bodyWithoutComments.includes('<AffiliateLink') && !entry.data.pr) {
+  throw new Error(`${entry.id}: AffiliateLink を使う記事は frontmatter に pr: true が必要です`);
+}
+
+const { Content } = await render(entry);
+---
+
+<ArticleLayout entry={entry}>
+  {/* MDX 内で import なしに使えるコンポーネント */}
+  <Content components={{ AffiliateLink, PrNotice }} />
+</ArticleLayout>

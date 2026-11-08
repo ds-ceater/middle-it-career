@@ -1,0 +1,13 @@
+@use 'sass:math';
+
+// Figma の px 値をそのまま書ける: rem(24) → 1.5rem
+@function rem($px) {
+  @return math.div($px, 16) * 1rem;
+}
+
+// 可変サイズ: fluid(16, 20) → SP 16px 〜 PC 20px を滑らかに
+@function fluid($min-px, $max-px, $min-vw: 375, $max-vw: 1280) {
+  $slope: math.div($max-px - $min-px, $max-vw - $min-vw);
+  $base: $min-px - $slope * $min-vw;
+  @return clamp(#{rem($min-px)}, #{rem($base)} + #{$slope * 100}vw, #{rem($max-px)});
+}

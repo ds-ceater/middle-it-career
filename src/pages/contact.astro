@@ -1,0 +1,25 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+
+// TODO: Google フォームを作成し、埋め込み用URL（…/viewform?embedded=true）に差し替え
+const FORM_URL: string = '';
+---
+
+<PageLayout title="お問い合わせ" description="ミドルITキャリアへのお問い合わせはこちら。">
+  <p>当サイトへのご意見・ご質問は、以下のフォームからお送りください。</p>
+  {
+    FORM_URL ? (
+      <iframe
+        src={FORM_URL}
+        title="お問い合わせフォーム"
+        width="100%"
+        height="900"
+        loading="lazy"
+        style="border:0"
+      />
+    ) : (
+      <p>（フォーム準備中）</p>
+    )
+  }
+  {FORM_URL && <p><a href={FORM_URL.replace('?embedded=true', '')}>フォームが表示されない場合はこちら</a></p>}
+</PageLayout>

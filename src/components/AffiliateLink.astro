@@ -1,0 +1,55 @@
+---
+// アフィリエイトリンクは必ずこのコンポーネント経由で出す。
+// - rel="sponsored" を自動付与（Google のリンク属性ガイドライン）
+// - 案件URLは src/lib/affiliates.ts で一元管理（差し替え・終了時に1か所直すだけ）
+import { AFFILIATES, type AffiliateId } from '@/lib/affiliates';
+
+interface Props {
+  id: AffiliateId;
+  variant?: 'text' | 'button';
+  newTab?: boolean;
+}
+
+const { id, variant = 'text', newTab = false } = Astro.props;
+const item = AFFILIATES[id];
+---
+
+<a
+  class:list={['affiliate-link', `affiliate-link--${variant}`]}
+  href={item.url}
+  rel={newTab ? 'sponsored noopener' : 'sponsored'}
+  target={newTab ? '_blank' : undefined}
+  data-affiliate-id={id}
+>
+  <slot>{item.label}</slot>
+  {newTab && <span class="visually-hidden">（新しいタブで開きます）</span>}
+</a>
+{/* ASP 指定の計測用 1px 画像がある場合 */}
+{item.pixel && <img src={item.pixel} width="1" height="1" alt="" loading="lazy" class="affiliate-link__pixel" />}
+
+<style lang="scss">
+  .affiliate-link {
+    &--button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: rem(48);
+      padding: var(--space-3) var(--space-8);
+      font-weight: var(--font-weight-bold);
+      color: #fff;
+      text-decoration: none;
+      background: var(--color-accent-strong); // 通常サイズの文字なので 4.5:1 を満たす濃い方
+      border-radius: var(--radius-md);
+
+      @include hover {
+        filter: brightness(0.92);
+      }
+    }
+
+    &__pixel {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+    }
+  }
+</style>

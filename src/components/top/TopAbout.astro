@@ -1,0 +1,90 @@
+---
+// Figma: about（運営）
+import { Image } from 'astro:assets';
+import avatarImage from '@/assets/images/about-avatar.jpg';
+---
+
+<section class="about" aria-labelledby="about-title">
+  <div class="about__inner container">
+    <h2 class="about__title" id="about-title">
+      運営
+    </h2>
+    <div class="about__card">
+      <div class="about__profile">
+        <Image
+          class="about__avatar"
+          src={avatarImage}
+          alt="パソコンで作業する運営者の手元"
+          width={286}
+          height={286}
+          fit="cover"
+        />
+        <div class="about__profile-body">
+          <h3 class="about__name">ミドルITキャリア 運営者</h3>
+          <p class="about__text">
+            実務経験10年。Web制作の実務経験をもとにIT転職情報を発信。複数回の転職を経験し、レバテック、Geeklyなどを実際に活用しました。その経験をもとに、有益な情報をまとめていきます。
+          </p>
+        </div>
+      </div>
+      {/* <a class="about__link" href="/about/">運営者情報</a> */}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .about {
+    padding-top: var(--space-section);
+
+    &__title {
+      @include section-title;
+    }
+
+    &__card {
+      display: grid;
+      justify-items: start;
+      gap: var(--space-6);
+      margin-top: var(--space-6);
+      padding: var(--space-8);
+      background: var(--color-bg-gray);
+    }
+
+    &__profile {
+      display: grid;
+      gap: var(--space-6);
+
+      @include mq(md) {
+        grid-template-columns: auto 1fr;
+      }
+    }
+
+    &__avatar {
+      width: rem(143);
+      height: rem(143);
+      object-fit: cover;
+    }
+
+    &__name {
+      font-size: #{fluid(20, 22)};
+      font-weight: var(--font-weight-bold);
+      color: var(--color-primary-dark);
+    }
+
+    &__text {
+      margin-top: var(--space-2);
+      font-size: rem(15);
+      line-height: 1.75;
+      color: var(--color-primary-dark);
+
+      @include mq(md) {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-muted);
+      }
+    }
+
+    &__link {
+      @include pill-button;
+      min-width: rem(184);
+      font-size: rem(18);
+    }
+  }
+</style>

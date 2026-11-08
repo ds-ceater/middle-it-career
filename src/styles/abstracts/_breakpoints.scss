@@ -1,0 +1,21 @@
+@use 'sass:map';
+
+// TODO: Figma の SP / PC フレーム幅に合わせて調整
+$breakpoints: (
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+);
+
+// モバイルファースト: @include mq(md) { ... } → 768px以上
+@mixin mq($key) {
+  @media (width >= map.get($breakpoints, $key)) {
+    @content;
+  }
+}
+
+@mixin mq-down($key) {
+  @media (width < map.get($breakpoints, $key)) {
+    @content;
+  }
+}

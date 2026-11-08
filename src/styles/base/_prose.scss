@@ -1,0 +1,59 @@
+@use 'abstracts' as *;
+
+// 記事本文（Markdown/MDX から出力されるHTML）用
+.prose {
+  > * + * {
+    margin-top: var(--space-6);
+  }
+
+  h2 {
+    margin-top: var(--space-16);
+    padding-bottom: var(--space-2);
+    font-size: var(--font-size-h2);
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  h3 {
+    margin-top: var(--space-12);
+    font-size: var(--font-size-lg);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  ul,
+  ol {
+    padding-left: 1.5em;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+  }
+
+  th,
+  td {
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  th {
+    background: var(--color-bg-subtle);
+  }
+
+  blockquote {
+    padding: var(--space-4) var(--space-6);
+    border-left: 4px solid var(--color-border);
+    background: var(--color-bg-subtle);
+  }
+}
+
+// 横スクロールする表のラッパー（MDXで <div class="table-scroll" tabindex="0" role="region" aria-label="…"> として使う）
+.table-scroll {
+  overflow-x: auto;
+}

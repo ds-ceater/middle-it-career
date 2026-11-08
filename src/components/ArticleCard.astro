@@ -1,0 +1,103 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { formatDate } from '@/lib/site';
+
+interface Props {
+  entry: CollectionEntry<'articles'>;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { entry, headingLevel: Heading = 'h3' } = Astro.props;
+const { title, description, publishedAt, category, thumbnail, thumbnailAlt } = entry.data;
+---
+
+<article class="article-card">
+  {
+    thumbnail && (
+      <Image
+        class="article-card__thumb"
+        src={thumbnail}
+        alt={thumbnailAlt ?? ''}
+        widths={[360, 720]}
+        sizes="(width >= 768px) 360px, 100vw"
+      />
+    )
+  }
+  <div class="article-card__body">
+    <p class="article-card__category">{category}</p>
+    <Heading class="article-card__title">
+      <!-- カード全体をクリック可能にしつつ、リンクテキストはタイトルだけにする -->
+      <a class="article-card__link" href={`/articles/${entry.id}/`}>{title}</a>
+    </Heading>
+    <p class="article-card__desc">{description}</p>
+    <time class="article-card__date" datetime={publishedAt.toISOString()}>
+      {formatDate(publishedAt)}
+    </time>
+  </div>
+</article>
+
+<style lang="scss">
+  .article-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    &:has(:focus-visible) {
+      @include focus-ring;
+    }
+
+    &__thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    &__body {
+      display: grid;
+      gap: var(--space-2);
+      padding: var(--space-4);
+    }
+
+    &__category {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-primary);
+    }
+
+    &__title {
+      font-size: var(--font-size-lg);
+    }
+
+    &__link {
+      color: var(--color-text);
+      text-decoration: none;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+      }
+
+      &:focus-visible {
+        outline: none;
+      }
+    }
+
+    @include hover {
+      .article-card__link {
+        text-decoration: underline;
+      }
+    }
+
+    &__desc,
+    &__date {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+    }
+  }
+</style>

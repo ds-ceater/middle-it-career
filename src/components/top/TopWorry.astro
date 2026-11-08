@@ -1,0 +1,180 @@
+---
+// Figma: worry（あなたの悩みから探す）
+// アイコンは6種の画像違い。Modifier は作らず SVG の差し替えで対応（色は currentColor）
+import IconAge from '@/assets/icons/icon-worry-age.svg';
+import IconSalary from '@/assets/icons/icon-worry-salary.svg';
+import IconTech from '@/assets/icons/icon-worry-tech.svg';
+import IconManager from '@/assets/icons/icon-worry-manager.svg';
+import IconFreelance from '@/assets/icons/icon-worry-freelance.svg';
+import IconRetirement from '@/assets/icons/icon-worry-retirement.svg';
+
+interface Item {
+  Icon: typeof IconAge;
+  label: [string, string];
+  /** 記事の URL。未設定の項目はリンクにせず「準備中」と表示する */
+  href?: string;
+}
+
+// 記事ができたら href を追加する
+const items: Item[] = [
+  { Icon: IconAge, label: ['50代でも', '転職できる？'], href: '/articles/50s-it-career-change/' },
+  {
+    Icon: IconSalary,
+    label: ['今の年収を維持して', '転職できる？'],
+    href: '/articles/maintain-salary-it-career-change/',
+  },
+  {
+    Icon: IconTech,
+    label: ['最新技術に', 'ついていけるか不安'],
+    href: '/articles/mid-career-it-engineer-reskilling/',
+  },
+  {
+    Icon: IconManager,
+    label: ['管理職経験を活かせる', '仕事が知りたい'],
+    href: '/articles/it-management-career-options/',
+  },
+  {
+    Icon: IconFreelance,
+    label: ['転職とフリーランス、', 'どちらがいい？'],
+    href: '/articles/career-change-vs-freelancing/',
+  },
+  {
+    Icon: IconRetirement,
+    label: ['役職定年後のキャリアを', '考えたい'],
+    href: '/articles/post-management-retirement-career/',
+  },
+];
+---
+
+<section class="worry container" aria-labelledby="worry-title">
+  <h2 class="worry__title" id="worry-title">あなたの悩みから探す</h2>
+  <p class="worry__lead">
+    <span>こんな悩みはありませんか？</span><span>同じ悩みを持つ方の解決策を紹介します。</span>
+  </p>
+  <ul class="worry__list">
+    {
+      items.map(({ Icon, label, href }) => {
+        // 記事があれば <a>、無ければ押せない <div>（見た目のカードは同じ）
+        const Tag = href ? 'a' : 'div';
+        return (
+          <li class="worry__item">
+            <Tag class="worry__link" href={href}>
+              <span class="worry__icon" aria-hidden="true">
+                <Icon />
+              </span>
+              <span class="worry__label">
+                {label.map((line) => (
+                  <span>{line}</span>
+                ))}
+                {!href && <span class="worry__soon">準備中</span>}
+              </span>
+            </Tag>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>
+
+<style lang="scss">
+  .worry {
+    padding-block: var(--space-section);
+
+    &__title {
+      @include section-title;
+    }
+
+    &__lead {
+      @include section-lead;
+
+      span {
+        display: inline;
+
+        @include mq(md) {
+          display: inline-block;
+        }
+      }
+
+      span + span {
+        margin-left: 1em;
+      }
+    }
+
+    &__list {
+      display: grid;
+      gap: var(--space-6);
+      margin-top: #{fluid(24, 48)};
+      padding: 0;
+      list-style: none;
+
+      @include mq(md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include mq(lg) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    &__link {
+      display: flex;
+      align-items: center;
+      gap: #{fluid(16, 24)};
+      height: 100%;
+      min-height: #{fluid(92, 156)};
+      padding: var(--space-4) #{fluid(20, 32)};
+      color: var(--color-primary-dark);
+      text-decoration: none;
+      background: var(--color-bg-subtle);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      transition:
+        box-shadow 0.2s,
+        translate 0.2s;
+
+      // リンクのカードだけ浮き上がる（準備中の <div> は影なし＝押せないと分かる見た目）
+      &[href] {
+        @include hover {
+          box-shadow: 0 rem(6) rem(16) rgb(6 55 106 / 0.16);
+          translate: 0 -2px;
+        }
+      }
+
+      &:not([href]) {
+        box-shadow: none;
+      }
+    }
+
+    &__icon {
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      width: rem(56);
+      height: rem(56);
+      color: var(--color-primary-dark);
+
+      // SVG ごとに縦横比が違うので、枠に収めて中央に置く（width/height 属性は残す）
+      :global(svg) {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+      }
+    }
+
+    &__label {
+      font-size: #{fluid(17, 20)};
+      font-weight: var(--font-weight-bold);
+      line-height: 1.6;
+
+      span:not(.worry__soon) {
+        display: block;
+      }
+    }
+
+    &__soon {
+      @include soon-badge;
+      margin-top: var(--space-1);
+    }
+  }
+</style>

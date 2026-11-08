@@ -1,0 +1,215 @@
+---
+// Figma: service（おすすめのIT転職サービスを比較する）
+import { Image } from 'astro:assets';
+import IconChevron from '@/assets/icons/icon-chevron-right.svg';
+import serviceImage from '@/assets/images/top-service.jpg';
+
+interface RankingItem {
+  name: string;
+  /** 記事の URL。未設定の項目はリンクにせず「準備中」と表示する */
+  href?: string;
+}
+
+// 記事ができたら href を追加する
+const ranking: RankingItem[] = [
+  { name: 'IT専門転職エージェント', href: '/articles/it-specialist-recruitment-agents/' },
+  { name: 'ミドル・ハイクラス向け', href: '/articles/mid-career-executive-recruitment-services/' },
+  { name: '管理職・PM向け', href: '/articles/management-project-manager-recruitment-agents/' },
+  { name: 'フリーランス向け', href: '/articles/freelance-agents-for-mid-career/' },
+];
+
+/** 「転職サービス比較ランキングを見る」のリンク先。未設定なら押せないボタンで「準備中」 */
+const rankingHref: string | undefined = '/articles/it-recruitment-services-ranking/';
+---
+
+<section class="service" aria-labelledby="service-title" id="service">
+  <div class="service__inner container">
+    <h2 class="service__title" id="service-title">おすすめのIT転職サービスを比較する</h2>
+    <p class="service__lead">40代・50代におすすめのIT転職サービスを厳選比較。</p>
+
+    <div class="service__body">
+      <div class="service__ranking">
+        <h3 class="service__ranking-title">人気のサービス</h3>
+        <ol class="service__ranking-list">
+          {
+            ranking.map((item, i) => {
+              const Tag = item.href ? 'a' : 'div';
+              return (
+                <li class="service__ranking-item">
+                  <Tag class="service__ranking-link" href={item.href}>
+                    <span class="service__ranking-rank" aria-hidden="true">
+                      {i + 1}
+                    </span>
+                    <span class="service__ranking-name">{item.name}</span>
+                    {item.href ? (
+                      <span class="service__ranking-arrow" aria-hidden="true">
+                        <IconChevron />
+                      </span>
+                    ) : (
+                      <span class="service__ranking-soon">準備中</span>
+                    )}
+                  </Tag>
+                </li>
+              );
+            })
+          }
+        </ol>
+      </div>
+      <div class="service__visual">
+        <Image
+          class="service__img"
+          src={serviceImage}
+          alt=""
+          widths={[400, 700, 1016]}
+          sizes="(width >= 1024px) 508px, 100vw"
+        />
+      </div>
+    </div>
+
+    <p class="service__more">
+      {
+        rankingHref ? (
+          <a class="service__more-btn" href={rankingHref}>
+            転職サービス比較ランキングを見る
+          </a>
+        ) : (
+          <span class="service__more-btn service__more-btn--soon">転職サービス比較ランキング（準備中）</span>
+        )
+      }
+    </p>
+  </div>
+</section>
+
+<style lang="scss">
+  .service {
+    padding-block: var(--space-section);
+    background: var(--color-bg-subtle);
+
+    &__title {
+      @include section-title;
+    }
+
+    &__lead {
+      @include section-lead;
+      margin-top: #{fluid(16, 48)};
+    }
+
+    &__body {
+      display: grid;
+      gap: var(--space-6);
+      margin-top: #{fluid(24, 48)};
+
+      @include mq(lg) {
+        grid-template-columns: 1.6fr 1fr;
+        gap: var(--space-8);
+      }
+    }
+
+    &__ranking {
+      padding: var(--space-6) #{fluid(20, 92)} var(--space-8);
+      background: rgb(255 255 255 / 0.8);
+      border-radius: var(--radius-lg);
+    }
+
+    &__ranking-title {
+      font-size: #{fluid(18, 24)};
+      font-weight: var(--font-weight-bold);
+      color: var(--color-primary-dark);
+    }
+
+    &__ranking-list {
+      margin-top: var(--space-2);
+      padding: 0;
+      list-style: none;
+    }
+
+    &__ranking-item {
+      border-bottom: 2px solid var(--color-border-light);
+    }
+
+    // 行全体をリンクにして、順位・名前・矢印を横並び
+    &__ranking-link {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: #{fluid(20, 32)};
+      min-height: #{fluid(52, 82)};
+      padding-block: var(--space-2);
+      color: var(--color-primary-dark);
+      text-decoration: none;
+
+      &[href] {
+        @include hover {
+          .service__ranking-name {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    &__ranking-rank {
+      display: grid;
+      place-items: center;
+      width: #{fluid(36, 55)};
+      aspect-ratio: 1;
+      font-size: #{fluid(15, 20)};
+      font-weight: var(--font-weight-bold);
+      color: #fff;
+      background: var(--color-primary-dark);
+      border-radius: 50%;
+    }
+
+    &__ranking-name {
+      font-size: #{fluid(14, 22)};
+      line-height: 1.5;
+    }
+
+    &__ranking-arrow {
+      display: grid;
+      place-items: center;
+      width: rem(24);
+    }
+
+    &__ranking-soon {
+      @include soon-badge;
+    }
+
+    &__visual {
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+    }
+
+    &__img {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 327 / 314;
+      object-fit: cover;
+
+      @include mq(md) {
+        aspect-ratio: 16 / 9;
+      }
+
+      @include mq(lg) {
+        aspect-ratio: auto;
+      }
+    }
+
+    &__more {
+      margin-top: #{fluid(16, 48)};
+      text-align: center;
+    }
+
+    &__more-btn {
+      @include pill-button;
+      width: 100%;
+      max-width: rem(740);
+      min-height: #{fluid(48, 60)};
+      font-size: #{fluid(16, 26)};
+      font-weight: var(--font-weight-bold);
+
+      &--soon {
+        @include pill-button-soon;
+      }
+    }
+  }
+</style>

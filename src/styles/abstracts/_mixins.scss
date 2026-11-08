@@ -1,0 +1,84 @@
+// スクリーンリーダーにだけ読ませる
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin focus-ring {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+// トップページ各セクションの見出し（Figma: 〇〇__title）／リード文（〇〇__lead）
+@mixin section-title {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-black);
+  color: var(--color-primary-dark);
+}
+
+@mixin section-lead {
+  margin-top: var(--space-4);
+  font-size: var(--font-size-lead);
+  line-height: 1.7;
+  color: var(--color-primary-dark);
+}
+
+// 紺色の角丸ボタン（Figma: 〇〇__more-btn / about__link など）。タップ領域は 44px 以上を確保
+@mixin pill-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem; // 44px
+  padding: 0.25rem 2rem;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  background: var(--color-primary-dark);
+  border-radius: var(--radius-full);
+  transition: background-color 0.2s;
+
+  @media (hover: hover) {
+    &[href]:hover {
+      background: var(--color-primary);
+    }
+  }
+}
+
+// 記事がまだ無いときの pill-button（押せない <span> に付ける。リンクに見えない淡い見た目）
+@mixin pill-button-soon {
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border: 2px dashed var(--color-border);
+}
+
+// 記事がまだ無い項目に付ける「準備中」ラベル（灰色文字は白・淡色背景の上で 4.5:1 以上）
+@mixin soon-badge {
+  display: inline-block;
+  padding: 0 0.5em;
+  font-size: 0.75rem; // 12px
+  font-weight: var(--font-weight-bold);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  vertical-align: middle;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+@mixin hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}

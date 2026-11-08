@@ -1,0 +1,64 @@
+---
+// Figma: middle-it-top（PC: node 1-4 / SP: node 18-315）
+// セクションと BEM の対応は docs/figma-bem-mapping.md を参照
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TopMv from '@/components/top/TopMv.astro';
+import TopWorry from '@/components/top/TopWorry.astro';
+import TopService from '@/components/top/TopService.astro';
+import TopAgeGuide from '@/components/top/TopAgeGuide.astro';
+import CategorySection from '@/components/top/CategorySection.astro';
+import TopAbout from '@/components/top/TopAbout.astro';
+
+import type { ComponentProps } from 'astro/types';
+
+// タグ：記事ができたら href を追加する（未設定のタグは「準備中」と表示される）
+// moreHref：カテゴリ一覧ページができたら追加する（未設定なら「詳しく見る」を出さない）
+const categories: ComponentProps<typeof CategorySection>[] = [
+  {
+    id: 'job-guide',
+    title: '職種別キャリアガイド',
+    lead: 'あなたの経験を活かせる仕事を見つけましょう。',
+    tags: [
+      { label: 'SE・PG', href: '/articles/40s-50s-software-engineer-career/' },
+      { label: 'インフラ・クラウド', href: '/articles/40s-50s-infrastructure-cloud-career/' },
+      { label: 'PM・PL', href: '/articles/40s-50s-project-manager-career/' },
+      { label: '社内SE・情シス', href: '/articles/40s-50s-in-house-it-career/' },
+      { label: 'コンサル・管理職', href: '/articles/40s-50s-it-consultant-management-career/' },
+    ],
+    tinted: true,
+  },
+  {
+    id: 'work-guide',
+    title: '年収・働き方ガイド',
+    lead: '年収とライフスタイルのバランスを考えましょう。',
+    tags: [
+      { label: '年収相場', href: '/articles/40s-50s-it-salary-by-job/' },
+      { label: '年収アップ戦略', href: '/articles/mid-career-it-salary-increase/' },
+      { label: 'リモートワーク', href: '/articles/40s-50s-remote-it-jobs/' },
+      { label: '雇用形態の比較', href: '/articles/it-employment-types-comparison/' },
+      { label: '独立・フリーランス', href: '/articles/40s-50s-freelance-engineer-guide/' },
+    ],
+  },
+  {
+    id: 'knowhow',
+    title: '転職ノウハウ',
+    lead: '転職活動を成功させるための実践的な情報をお届けします。',
+    tags: [
+      { label: '職務経歴書の書き方', href: '/articles/40s-50s-it-resume-writing/' },
+      { label: '面接対策', href: '/articles/mid-career-it-interview-guide/' },
+      { label: '転職活動の進め方', href: '/articles/40s-50s-it-job-search-process/' },
+      { label: 'エージェントの活用', href: '/articles/mid-career-recruitment-agent-guide/' },
+    ],
+    tinted: true,
+  },
+];
+---
+
+<BaseLayout>
+  <TopMv />
+  <TopWorry />
+  <TopService />
+  <TopAgeGuide />
+  {categories.map((c) => <CategorySection {...c} />)}
+  <TopAbout />
+</BaseLayout>
