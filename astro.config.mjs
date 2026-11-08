@@ -6,8 +6,7 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  // TODO: 独自ドメイン取得後に差し替え（sitemap・canonical・OGPに使われる）
-  site: 'https://example.com',
+  site: 'https://middle-it-career.com',
   trailingSlash: 'always',
   build: { format: 'directory' },
   integrations: [mdx(), react(), sitemap()],
