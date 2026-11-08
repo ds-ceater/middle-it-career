@@ -31,6 +31,20 @@ const ogImageUrl = new URL(ogImage, Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Google タグ（アナリティクス）。開発中のアクセスを計測しないよう本番ビルドのみ出力。
+        is:inline で Astro のバンドル処理を通さず、書いたとおりに出力する */}
+    {
+      import.meta.env.PROD && (
+        <>
+          <script is:inline async src="https://www.googletagmanager.com/gtm.js?id=GTM-TCNRR7MT"></script>
+          <script is:inline>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          </script>
+        </>
+      )
+    }
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
