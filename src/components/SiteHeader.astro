@@ -33,7 +33,11 @@ import { NAV, SITE } from '@/lib/site';
       <ul class="header__nav-list">
         {NAV.map((item) => (
           <li class="header__nav-item">
-            <a class="header__nav-link" href={item.href}>
+            <a
+              class="header__nav-link"
+              href={item.href}
+              aria-current={Astro.url.pathname === item.href ? 'page' : undefined}
+            >
               {item.label}
             </a>
           </li>

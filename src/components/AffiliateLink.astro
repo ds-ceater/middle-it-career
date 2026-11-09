@@ -6,12 +6,16 @@ import { AFFILIATES, type AffiliateId } from '@/lib/affiliates';
 
 interface Props {
   id: AffiliateId;
-  variant?: 'text' | 'button';
+  variant?: 'text' | 'button' | 'banner';
   newTab?: boolean;
 }
 
 const { id, variant = 'text', newTab = false } = Astro.props;
 const item = AFFILIATES[id];
+const banner = 'banner' in item ? item.banner : undefined;
+if (variant === 'banner' && !banner) {
+  throw new Error(`AffiliateLink: "${id}" にはバナー画像が登録されていません（src/lib/affiliates.ts）`);
+}
 ---
 
 <a
@@ -21,7 +25,20 @@ const item = AFFILIATES[id];
   target={newTab ? '_blank' : undefined}
   data-affiliate-id={id}
 >
-  <slot>{item.label}</slot>
+  {
+    variant === 'banner' && banner ? (
+      <img
+        class="affiliate-link__banner"
+        src={banner.src}
+        width={banner.width}
+        height={banner.height}
+        alt={banner.alt}
+        loading="lazy"
+      />
+    ) : (
+      <slot>{item.label}</slot>
+    )
+  }
   {newTab && <span class="visually-hidden">（新しいタブで開きます）</span>}
 </a>
 {/* ASP 指定の計測用 1px 画像がある場合 */}
@@ -44,6 +61,20 @@ const item = AFFILIATES[id];
       @include hover {
         filter: brightness(0.92);
       }
+    }
+
+    &--banner {
+      display: block;
+      width: fit-content;
+      max-width: 100%;
+      margin-inline: auto;
+    }
+
+    // 狭い画面では幅に合わせて縮める（比率は width/height 属性から保たれる）
+    &__banner {
+      display: block;
+      max-width: 100%;
+      height: auto;
     }
 
     &__pixel {

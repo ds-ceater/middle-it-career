@@ -7,14 +7,14 @@ export const SITE = {
   author: 'ミドルITキャリア編集部',
 } as const;
 
-// グローバルナビ（Figma: header__nav）。トップページ内の各セクションへのリンク。
-// TODO: カテゴリ別の一覧ページを作ったら、そちらへのリンクに差し替える
+// グローバルナビ（Figma: header__nav）。テーマ別の一覧ページ（src/lib/topics.ts）へのリンク。
+// 40代・50代は一覧ページがないため、それぞれの年代別ガイド記事へリンクする
 export const NAV = [
-  { href: '/#service', label: '転職サービス比較' },
-  { href: '/#age-40', label: '40代の転職' },
-  { href: '/#age-50', label: '50代の転職' },
-  { href: '/#job-guide', label: '職種別キャリア' },
-  { href: '/#knowhow', label: '転職ノウハウ' },
+  { href: '/category/service-comparison/', label: '転職サービス比較' },
+  { href: '/articles/40s-it-career-guide/', label: '40代の転職' },
+  { href: '/articles/50s-it-career-guide/', label: '50代の転職' },
+  { href: '/category/job-guide/', label: '職種別キャリア' },
+  { href: '/category/knowhow/', label: '転職ノウハウ' },
 ] as const;
 
 // フッターナビ（Figma: footer__nav）

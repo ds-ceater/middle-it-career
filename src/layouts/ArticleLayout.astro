@@ -4,13 +4,18 @@ import { Image, getImage } from 'astro:assets';
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumb from '@/components/Breadcrumb.astro';
 import PrNotice from '@/components/PrNotice.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import { topicsOf, topicHref } from '@/lib/topics';
 import { SITE, formatDate } from '@/lib/site';
 
 interface Props {
   entry: CollectionEntry<'articles'>;
+  /** 記事末尾に出す関連記事（src/lib/articles.ts の getRelatedArticles で選ぶ） */
+  related?: CollectionEntry<'articles'>[];
 }
 
-const { entry } = Astro.props;
+const { entry, related = [] } = Astro.props;
+const topics = topicsOf(entry.id);
 const { title, description, publishedAt, updatedAt, category, pr, thumbnail, thumbnailAlt } = entry.data;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 
@@ -80,6 +85,36 @@ const jsonLd = {
       <slot />
     </div>
   </article>
+
+  {
+    (related.length > 0 || topics.length > 0) && (
+      <section class="related container" aria-labelledby="related-title">
+        <h2 class="related__title" id="related-title">
+          関連記事
+        </h2>
+        {related.length > 0 && (
+          <ul class="related__list">
+            {related.map((r) => (
+              <li>
+                <ArticleCard entry={r} />
+              </li>
+            ))}
+          </ul>
+        )}
+        {topics.length > 0 && (
+          <ul class="related__topics">
+            {topics.map((t) => (
+              <li>
+                <a class="related__topic-link" href={topicHref(t.id)}>
+                  「{t.title}」の記事一覧へ
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    )
+  }
 </BaseLayout>
 
 <style lang="scss">
@@ -121,6 +156,46 @@ const jsonLd = {
 
     &__body {
       margin-top: var(--space-12);
+    }
+  }
+
+  .related {
+    margin-top: var(--space-16);
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--color-border);
+
+    &__title {
+      font-size: var(--font-size-h2);
+    }
+
+    &__list {
+      display: grid;
+      gap: var(--space-6);
+      margin-top: var(--space-6);
+      padding: 0;
+      list-style: none;
+
+      @include mq(md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include mq(lg) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    &__topics {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--space-4);
+      margin-top: var(--space-8);
+      padding: 0;
+      list-style: none;
+    }
+
+    &__topic-link {
+      @include pill-button;
     }
   }
 </style>

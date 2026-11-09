@@ -2,6 +2,13 @@
 // Figma: footer（PC：ロゴ左・ナビ横並び ／ SP：中央揃えの縦並び）
 import LogoWhite from '@/assets/icons/logo-white.svg';
 import { FOOTER_NAV, SITE } from '@/lib/site';
+import { TOPICS, topicHref } from '@/lib/topics';
+
+// 主要なテーマの一覧ページと記事一覧（全記事は並べず、入口だけを置く）
+const contentNav = [
+  ...TOPICS.map((t) => ({ href: topicHref(t.id), label: t.title })),
+  { href: '/articles/', label: '記事一覧' },
+];
 ---
 
 <footer class="footer">
@@ -10,19 +17,34 @@ import { FOOTER_NAV, SITE } from '@/lib/site';
       <LogoWhite class="footer__logo-img" aria-hidden="true" />
       <span class="visually-hidden">{SITE.name} トップページ</span>
     </a>
-    <nav class="footer__nav" aria-label="フッター">
-      <ul class="footer__nav-list">
-        {
-          FOOTER_NAV.map((item) => (
-            <li class="footer__nav-item">
-              <a class="footer__nav-link" href={item.href}>
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+    <div class="footer__navs">
+      <nav class="footer__contents" aria-label="コンテンツ">
+        <ul class="footer__contents-list">
+          {
+            contentNav.map((item) => (
+              <li>
+                <a class="footer__contents-link" href={item.href}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <nav class="footer__nav" aria-label="サイト情報">
+        <ul class="footer__nav-list">
+          {
+            FOOTER_NAV.map((item) => (
+              <li class="footer__nav-item">
+                <a class="footer__nav-link" href={item.href}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
     <p class="footer__copy"><small>&copy; {SITE.name} All rights reserved.</small></p>
   </div>
 </footer>
@@ -55,6 +77,50 @@ import { FOOTER_NAV, SITE } from '@/lib/site';
 
     &__logo-img {
       width: rem(254);
+    }
+
+    &__navs {
+      display: grid;
+      gap: var(--space-4);
+      width: 100%;
+    }
+
+    // コンテンツ（テーマ別一覧）：SP は2列、PC は横並び
+    &__contents-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      padding: 0;
+      list-style: none;
+
+      @include mq(md) {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: var(--space-8);
+      }
+    }
+
+    &__contents-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: rem(44);
+      padding-inline: var(--space-2);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      color: #fff;
+      text-decoration: none;
+
+      @include hover {
+        text-decoration: underline;
+      }
+    }
+
+    &__nav {
+      border-top: 1px solid rgb(255 255 255 / 0.3);
+
+      @include mq(md) {
+        padding-top: var(--space-2);
+      }
     }
 
     &__nav-list {

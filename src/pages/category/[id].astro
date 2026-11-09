@@ -1,0 +1,136 @@
+---
+// テーマ別の記事一覧ページ（/category/<id>/）。テーマと記事の対応は src/lib/topics.ts
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { assertTopicSlugsExist, getPublishedArticles } from '@/lib/articles';
+import { TOPICS, topicHref } from '@/lib/topics';
+
+export async function getStaticPaths() {
+  await assertTopicSlugsExist();
+  const published = await getPublishedArticles();
+  const byId = new Map(published.map((e) => [e.id, e]));
+
+  return TOPICS.map((topic) => ({
+    params: { id: topic.id },
+    props: {
+      topic,
+      // topics.ts に書いた順で並べる（下書きの記事は本番では出さない）
+      articles: topic.articles.flatMap((slug) => byId.get(slug) ?? []),
+    },
+  }));
+}
+
+const { topic, articles } = Astro.props;
+const otherTopics = TOPICS.filter((t) => t.id !== topic.id);
+---
+
+<BaseLayout title={topic.title} description={`${topic.title}の記事一覧。${topic.lead}`}>
+  <div class="topic container">
+    <Breadcrumb
+      items={[{ href: '/', label: 'ホーム' }, { href: '/articles/', label: '記事一覧' }, { label: topic.title }]}
+    />
+    <h1 class="topic__title">{topic.title}</h1>
+    <p class="topic__lead">{topic.lead}</p>
+
+    {
+      articles.length > 0 ? (
+        <ul class="topic__list">
+          {articles.map((entry) => (
+            <li>
+              <ArticleCard entry={entry} headingLevel="h2" />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="topic__empty">記事は準備中です。</p>
+      )
+    }
+
+    <nav class="topic__others" aria-labelledby="other-topics-title">
+      <p class="topic__others-title" id="other-topics-title">ほかのテーマを見る</p>
+      <ul class="topic__others-list">
+        {
+          otherTopics.map((t) => (
+            <li>
+              <a class="topic__others-link" href={topicHref(t.id)}>
+                {t.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>
+
+<style lang="scss">
+  .topic {
+    padding-top: var(--space-6);
+
+    &__title {
+      margin-top: var(--space-6);
+      font-size: var(--font-size-h1);
+    }
+
+    &__lead {
+      margin-top: var(--space-3);
+      color: var(--color-text-muted);
+    }
+
+    &__list {
+      display: grid;
+      gap: var(--space-6);
+      margin-top: var(--space-8);
+      padding: 0;
+      list-style: none;
+
+      @include mq(md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include mq(lg) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    &__empty {
+      margin-top: var(--space-8);
+    }
+
+    &__others {
+      margin-top: var(--space-16);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--color-border);
+    }
+
+    &__others-title {
+      font-weight: var(--font-weight-bold);
+    }
+
+    &__others-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+      padding: 0;
+      list-style: none;
+    }
+
+    &__others-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: rem(44);
+      padding: var(--space-2) var(--space-4);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-primary-dark);
+      text-decoration: none;
+      border: 2px solid var(--color-border-light);
+      border-radius: var(--radius-full);
+
+      @include hover {
+        border-color: var(--color-primary);
+      }
+    }
+  }
+</style>
