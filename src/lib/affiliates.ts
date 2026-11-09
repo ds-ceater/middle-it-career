@@ -7,6 +7,12 @@ export const AFFILIATES = {
     asp: 'A8.net',
     pixel: undefined as string | undefined,
   },
+  'at-pro-jin': {
+    label: '＠PRO人',
+    url: 'https://px.a8.net/svt/ejp?a8mat=4BGGBI+7BR1RM+4GWI+BX3J6',
+    asp: 'A8.net',
+    pixel: 'https://www12.a8.net/0.gif?a8mat=4BGGBI+7BR1RM+4GWI+BX3J6',
+  },
 } as const satisfies Record<string, { label: string; url: string; asp: string; pixel?: string }>;
 
 export type AffiliateId = keyof typeof AFFILIATES;
