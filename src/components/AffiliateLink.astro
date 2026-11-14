@@ -24,6 +24,7 @@ if (variant === 'banner' && !banner) {
   rel={newTab ? 'sponsored noopener' : 'sponsored'}
   target={newTab ? '_blank' : undefined}
   data-affiliate-id={id}
+  data-affiliate-variant={variant}
 >
   {
     variant === 'banner' && banner ? (
@@ -43,6 +44,37 @@ if (variant === 'banner' && !banner) {
 </a>
 {/* ASP 指定の計測用 1px 画像がある場合 */}
 {item.pixel && <img src={item.pixel} width="1" height="1" alt="" loading="lazy" class="affiliate-link__pixel" />}
+
+<script>
+  // 広告クリックを GTM（dataLayer）に通知する。GTM 側で「affiliate_click」をトリガーに GA4 へ送る。
+  // - リンクごとにリスナーを付けず document で一括で受ける（コンポーネントが何個あってもスクリプトは1回だけ読み込まれる）
+  // - 成果（報酬）の計測は ASP 側が行うので、ここは「どの広告がどこでクリックされたか」の分析用
+  type DataLayerWindow = Window & { dataLayer?: Record<string, unknown>[] };
+
+  document.addEventListener('click', (e) => {
+    const link = (e.target as HTMLElement | null)?.closest<HTMLAnchorElement>('a[data-affiliate-id]');
+    if (!link) return;
+
+    // ページ内で何番目の広告か（1始まり）＝記事内の位置の目安
+    const links = Array.from(document.querySelectorAll('a[data-affiliate-id]'));
+    // 直前の見出し（h2/h3）＝どのセクションの広告か
+    const headings = Array.from(document.querySelectorAll('main h2, main h3'));
+    const section = headings
+      .filter((h) => h.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .at(-1);
+
+    const w = window as DataLayerWindow;
+    w.dataLayer = w.dataLayer || [];
+    w.dataLayer.push({
+      event: 'affiliate_click',
+      affiliate_id: link.dataset.affiliateId,
+      affiliate_variant: link.dataset.affiliateVariant,
+      affiliate_position: links.indexOf(link) + 1,
+      affiliate_section: section?.textContent?.trim() ?? '(冒頭)',
+      page_path: location.pathname,
+    });
+  });
+</script>
 
 <style lang="scss">
   .affiliate-link {
