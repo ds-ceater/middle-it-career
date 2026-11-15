@@ -100,6 +100,7 @@ export const TOPICS = [
       { label: '面接対策', slug: 'mid-career-it-interview-guide' },
       { label: '転職活動の進め方', slug: '40s-50s-it-job-search-process' },
       { label: 'エージェントの活用', slug: 'mid-career-recruitment-agent-guide' },
+      { label: 'エージェント利用の体験談', slug: 'it-recruitment-agent-experience' },
     ],
   },
 ] as const satisfies readonly Topic[];
