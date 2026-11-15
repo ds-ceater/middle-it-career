@@ -92,6 +92,7 @@ export const TOPICS = [
       'mid-career-it-interview-guide',
       '40s-50s-it-job-search-process',
       'mid-career-recruitment-agent-guide',
+      'it-recruitment-agent-experience',
       'mid-career-it-engineer-reskilling',
     ],
     tags: [

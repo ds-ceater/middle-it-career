@@ -45,6 +45,7 @@ const contentNav = [
         </ul>
       </nav>
     </div>
+    <p class="footer__note">※当サイトに掲載している写真・画像はすべてイメージです。</p>
     <p class="footer__copy"><small>&copy; {SITE.name} All rights reserved.</small></p>
   </div>
 </footer>
@@ -153,6 +154,8 @@ const contentNav = [
       }
     }
 
+    // 注釈とコピーライトは、PC ではナビと同じ右の列にそろえる
+    &__note,
     &__copy {
       font-size: var(--font-size-sm);
 
