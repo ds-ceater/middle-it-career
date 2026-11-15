@@ -19,7 +19,9 @@
   --color-btn-soft: #eef4fb; // 年代別カードの「詳しく見る」
   --color-border: #d0d7de;
   --color-border-light: #dce7f2; // カード・タグの枠線
-  --color-focus: #ffbf47;
+  // フォーカス枠：紺の枠＋内側の白い縁の二重線。白・淡色背景では紺が、紺背景では白が 3:1 以上で見える
+  --color-focus: var(--color-primary-dark);
+  --color-focus-inner: #ffffff;
 
   // Typography
   // --font-noto-sans-jp は astro.config.mjs の fonts で生成（最適化済みフォールバック込み）
@@ -27,7 +29,9 @@
   --font-size-sm: #{rem(14)};
   --font-size-base: #{rem(16)};
   --font-size-lg: #{fluid(18, 20)};
-  --font-size-lead: #{fluid(14, 22)}; // セクションのリード文
+  --font-size-prose: #{fluid(17, 18)}; // 記事本文
+  --font-size-prose-h3: #{fluid(20, 22)}; // 記事本文の h3
+  --font-size-lead: #{fluid(16, 22)}; // セクションのリード文
   --font-size-h2: #{fluid(22, 40)};
   --font-size-h1: #{fluid(26, 36)};
   // Font weight（Noto Sans JP は可変フォント。使う太さを4種類に集約）

@@ -41,7 +41,8 @@ import mvImage from '@/assets/images/top-mv.png';
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    padding-block: var(--space-6) rem(330);
+    // SP：写真は下端固定なので、下の余白を増やすほどボタンと人物の頭の距離が開く（頭髪に被らない値）
+    padding-block: var(--space-6) rem(350);
     background: linear-gradient(#cfe6f7, #a9d2f1); // 写真の上に続く空の色
 
     @include mq(md) {

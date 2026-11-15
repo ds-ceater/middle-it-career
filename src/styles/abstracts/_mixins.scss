@@ -14,6 +14,7 @@
 @mixin focus-ring {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-focus-inner); // outline-offset の隙間を白で埋めて二重線にする
 }
 
 // トップページ各セクションの見出し（Figma: 〇〇__title）／リード文（〇〇__lead）
@@ -30,12 +31,12 @@
   color: var(--color-primary-dark);
 }
 
-// 紺色の角丸ボタン（Figma: 〇〇__more-btn / about__link など）。タップ領域は 44px 以上を確保
+// 紺色の角丸ボタン（Figma: 〇〇__more-btn / about__link など）。タップ領域は 48px 以上を確保
 @mixin pill-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.75rem; // 44px
+  min-height: 3rem; // 48px（Android の 48dp・Apple の 44pt を満たす）
   padding: 0.25rem 2rem;
   font-weight: var(--font-weight-medium);
   line-height: 1.5;

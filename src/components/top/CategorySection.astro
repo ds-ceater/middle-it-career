@@ -37,7 +37,7 @@ const titleId = `${id}-title`;
           const Tag = tag.href ? 'a' : 'div';
           const parts = tag.label.split('|');
           return (
-            <li>
+            <li class="category-section__tag-item">
               <Tag class="category-section__tag" href={tag.href}>
                 {parts.length > 1 ? (
                   <span class="category-section__tag-label">
@@ -96,7 +96,14 @@ const titleId = `${id}-title`;
       @include mq(md) {
         // 列数はタグの数と画面幅に合わせて自動（PC：5個なら5列、4個なら4列）
         grid-template-columns: repeat(auto-fit, minmax(rem(200), 1fr));
+        // 全行を一番高い行（2行に折り返したタグ）にそろえ、1行のタグも同じ高さにする
+        grid-auto-rows: 1fr;
       }
+    }
+
+    // タグを li の高さいっぱいに広げる（grid の子は既定で stretch）
+    &__tag-item {
+      display: grid;
     }
 
     &__tag {
@@ -140,8 +147,9 @@ const titleId = `${id}-title`;
       @include soon-badge;
     }
 
+    // リード文→タグの見た目の間隔（タグ一覧の margin-top 24〜32px ＋ リード文の行間の上下余白 約6〜8px）と揃える
     &__more {
-      margin-top: var(--space-6);
+      margin-top: #{fluid(30, 40)};
       text-align: center;
     }
 

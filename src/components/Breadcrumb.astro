@@ -56,7 +56,9 @@ const jsonLd = {
       margin-inline: var(--space-2);
     }
 
+    // 見た目の行の高さは変えず、上下の padding で押せる範囲だけを約 48px に広げる（インライン要素の padding は行の高さに影響しない）
     &__link {
+      padding-block: rem(12);
       color: inherit;
     }
   }

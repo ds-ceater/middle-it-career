@@ -2,6 +2,9 @@
 
 // 記事本文（Markdown/MDX から出力されるHTML）用
 .prose {
+  // 長文を読む本文は 40代・50代の読者に合わせて大きめに（Apple の本文標準 17pt に合わせ、PC は 18px）
+  font-size: var(--font-size-prose);
+
   > * + * {
     margin-top: var(--space-6);
   }
@@ -15,7 +18,7 @@
 
   h3 {
     margin-top: var(--space-12);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-prose-h3); // 本文（17〜18px）より一段大きく
   }
 
   img {

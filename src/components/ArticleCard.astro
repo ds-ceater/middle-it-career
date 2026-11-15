@@ -42,6 +42,7 @@ const { title, description, publishedAt, category, thumbnail, thumbnailAlt } = e
     position: relative;
     display: flex;
     flex-direction: column;
+    height: 100%; // 一覧の grid で横に並んだカードの高さを揃える（親の li は grid により同じ行で同じ高さになる）
     overflow: hidden;
     background: var(--color-bg);
     border: 1px solid var(--color-border);
@@ -57,8 +58,11 @@ const { title, description, publishedAt, category, thumbnail, thumbnailAlt } = e
       object-fit: cover;
     }
 
+    // 余った高さは説明文の行が吸収し、日付は常にカードの下端に揃える
     &__body {
+      flex: 1;
       display: grid;
+      grid-template-rows: auto auto 1fr auto;
       gap: var(--space-2);
       padding: var(--space-4);
     }
@@ -96,7 +100,7 @@ const { title, description, publishedAt, category, thumbnail, thumbnailAlt } = e
 
     &__desc,
     &__date {
-      font-size: var(--font-size-sm);
+      font-size: rem(15);
       color: var(--color-text-muted);
     }
   }
