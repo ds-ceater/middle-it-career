@@ -89,6 +89,19 @@ const titleId = 'recommend-title';
         padding-inline: var(--space-4);
         text-align: center;
       }
+
+      // 横並びのときは、社名・説明文・ボタンを各カード共通の行（subgrid）に載せる。
+      // ボタンの行は一番背の高いボタン（文言が長く改行されたもの）に合わせて伸び、全ボタンの高さがそろう
+      @include mq(md) {
+        display: grid;
+        grid-row: span 3;
+        grid-template-rows: subgrid;
+        row-gap: var(--space-2);
+
+        :global(.affiliate-link--button) {
+          margin-top: 0; // auto のままだと行の高さまで伸びない
+        }
+      }
     }
 
     &__name {
