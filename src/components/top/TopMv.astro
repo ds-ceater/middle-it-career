@@ -96,7 +96,8 @@ import mvImage from '@/assets/images/top-mv.png';
     }
 
     &__title {
-      font-size: #{fluid(28, 72)};
+      // PC の最大は 64px：72px だと幅 1920px 前後で「次のキャリアを。」の末尾が写真の男性の頭髪に触れるため
+      font-size: #{fluid(28, 64)};
       font-weight: var(--font-weight-black);
       line-height: 1.35;
       color: var(--color-primary-dark);
