@@ -2,6 +2,7 @@
 // Figma: job-guide / work-guide / knowhow（同じ構成のため共通 Block「category-section」に切り出し）
 // セクション名は id（ページ内リンク用）として残す
 interface Tag {
+  /** 「|」の位置でだけ改行させる（例：'エージェント利用の|体験談'）。幅が足りるときは1行のまま */
   label: string;
   /** 記事の URL。未設定のタグはリンクにせず「準備中」と表示する */
   href?: string;
@@ -34,10 +35,22 @@ const titleId = `${id}-title`;
       {
         tags.map((tag) => {
           const Tag = tag.href ? 'a' : 'div';
+          const parts = tag.label.split('|');
           return (
             <li>
               <Tag class="category-section__tag" href={tag.href}>
-                {tag.label}
+                {parts.length > 1 ? (
+                  <span class="category-section__tag-label">
+                    {parts.map((part, i) => (
+                      <>
+                        {i > 0 && <wbr />}
+                        {part}
+                      </>
+                    ))}
+                  </span>
+                ) : (
+                  tag.label
+                )}
                 {!tag.href && <span class="category-section__soon">準備中</span>}
               </Tag>
             </li>
@@ -115,6 +128,12 @@ const titleId = `${id}-title`;
         gap: var(--space-1);
         color: var(--color-text-muted);
       }
+    }
+
+    // 文字の途中では折り返さず、<wbr>（ラベルの「|」）の位置でだけ改行する
+    &__tag-label {
+      word-break: keep-all;
+      overflow-wrap: anywhere; // それでも収まらない極端に狭い幅では、はみ出さないよう途中でも折る
     }
 
     &__soon {

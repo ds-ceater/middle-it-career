@@ -1,0 +1,104 @@
+---
+// 記事冒頭の「おすすめ」枠（MDX から <RecommendBox title="…" items={[…]} /> で使う）
+// - 結論を先に知りたい読者向けに、本文の紹介セクションへのリンクと公式サイトのボタンを並べる
+// - 見出しタグは使わない（記事の見出し階層 h2 → h3 を崩さないため）。aside の名前は aria-labelledby で付ける
+import AffiliateLink from '@/components/AffiliateLink.astro';
+import type { AffiliateId } from '@/lib/affiliates';
+
+interface Item {
+  name: string;
+  /** 一言の特徴 */
+  text: string;
+  /** 本文の紹介セクションの見出し id（# なし） */
+  anchor: string;
+  affiliateId: AffiliateId;
+}
+
+interface Props {
+  title: string;
+  items: Item[];
+}
+
+const { title, items } = Astro.props;
+// 1ページに1つの想定。ビルド結果が毎回同じになるよう固定の id にする
+const titleId = 'recommend-title';
+---
+
+<aside class="recommend" aria-labelledby={titleId}>
+  <p class="recommend__title" id={titleId}>{title}</p>
+  <ol class="recommend__list">
+    {
+      items.map((item) => (
+        <li class="recommend__item">
+          <p class="recommend__name">
+            <a href={`#${item.anchor}`}>{item.name}</a>
+          </p>
+          <p class="recommend__text">{item.text}</p>
+          <AffiliateLink id={item.affiliateId} variant="button" newTab>
+            {item.name}の公式サイトを見る
+          </AffiliateLink>
+        </li>
+      ))
+    }
+  </ol>
+</aside>
+
+<style lang="scss">
+  .recommend {
+    margin-block: var(--space-8);
+    padding: var(--space-6) var(--space-4);
+    background: var(--color-bg-subtle);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+
+    @include mq(md) {
+      padding-inline: var(--space-6);
+    }
+
+    &__title {
+      margin: 0;
+      font-size: #{fluid(18, 20)};
+      font-weight: var(--font-weight-bold);
+      text-align: center;
+    }
+
+    &__list {
+      display: grid;
+      gap: var(--space-4);
+      margin: var(--space-4) 0 0;
+      padding: 0;
+      list-style: none;
+
+      @include mq(md) {
+        grid-template-columns: repeat(auto-fit, minmax(rem(200), 1fr));
+      }
+    }
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      margin: 0;
+      padding: var(--space-4);
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
+
+      // ボタンは下端にそろえる（説明文の長さが違っても高さがそろう）
+      :global(.affiliate-link--button) {
+        margin-top: auto;
+        padding-inline: var(--space-4);
+        text-align: center;
+      }
+    }
+
+    &__name {
+      margin: 0;
+      font-weight: var(--font-weight-bold);
+    }
+
+    &__text {
+      margin: 0;
+      font-size: var(--font-size-sm);
+    }
+  }
+</style>
