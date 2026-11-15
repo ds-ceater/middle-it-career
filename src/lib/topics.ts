@@ -48,6 +48,7 @@ export const TOPICS = [
     lead: 'あなたの経験を活かせる仕事を見つけましょう。',
     articles: [
       '40s-50s-software-engineer-career',
+      '40s-50s-web-designer-coder-career',
       '40s-50s-infrastructure-cloud-career',
       '40s-50s-project-manager-career',
       '40s-50s-in-house-it-career',
