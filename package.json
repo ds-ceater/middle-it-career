@@ -11,6 +11,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "format": "prettier --write .",
     "new:article": "node scripts/new-article.mjs"
   },
@@ -24,11 +26,17 @@
   },
   "devDependencies": {
     "@astrojs/check": "latest",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.10",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "jsdom": "^31.0.1",
     "prettier": "^3.0.0",
     "prettier-plugin-astro": "latest",
     "sass": "^1.80.0",
-    "typescript": "^5.6.0"
+    "typescript": "^5.6.0",
+    "vitest": "^5.1.0"
   }
 }

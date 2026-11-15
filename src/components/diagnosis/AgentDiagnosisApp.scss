@@ -1,0 +1,272 @@
+// 転職エージェント診断（AgentDiagnosisApp.tsx）
+// - React コンポーネントには Astro の scoped style が使えないので、BEM のクラス名で衝突を避ける
+// - 記事本文（.prose）の中にも置くため、.prose の ul / ol の余白（詳細度 0,1,1）に負ける箇所は
+//   「.agent-diagnosis .agent-diagnosis__xxx」（詳細度 0,2,0）で書く
+.agent-diagnosis {
+  padding: var(--space-6) var(--space-4);
+  font-size: var(--font-size-base);
+  background: var(--color-bg-subtle);
+  border: 2px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+
+  @include mq(md) {
+    padding-inline: var(--space-6);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary-dark);
+    text-align: center;
+  }
+
+  &__lead {
+    margin: var(--space-2) 0 0;
+    font-size: var(--font-size-sm);
+    text-align: center;
+  }
+
+  // ---- 質問 ----
+  &__form {
+    display: grid;
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+  }
+
+  &__question {
+    min-width: 0; // fieldset は既定で中身の幅より縮まないため
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  &__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+    margin-bottom: var(--space-3);
+    padding: 0;
+    font-weight: var(--font-weight-bold);
+  }
+
+  &__number {
+    padding: 0 var(--space-2);
+    font-size: var(--font-size-sm);
+    color: #fff;
+    background: var(--color-primary-dark);
+    border-radius: var(--radius-sm);
+  }
+
+  &__missing {
+    padding: 0 var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent-strong); // 白背景で 4.5:1 以上
+    background: var(--color-bg);
+    border: 1px solid currentColor;
+    border-radius: var(--radius-sm);
+  }
+
+  &__choices {
+    display: grid;
+    gap: var(--space-2);
+
+    @include mq(md) {
+      grid-template-columns: repeat(auto-fit, minmax(rem(200), 1fr));
+    }
+  }
+
+  // 選択肢は枠全体が押せる。高さ 48px 以上でタップしやすくする
+  &__choice {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    min-height: rem(48);
+    padding: var(--space-2) var(--space-4);
+    line-height: 1.5;
+    cursor: pointer;
+    background: var(--color-bg);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    @include hover {
+      border-color: var(--color-primary);
+    }
+
+    // 選んだ選択肢は枠と文字で示す（色だけに頼らない）
+    &:has(:checked) {
+      font-weight: var(--font-weight-bold);
+      border-color: var(--color-primary);
+      box-shadow: inset 0 0 0 1px var(--color-primary);
+    }
+  }
+
+  &__radio {
+    flex-shrink: 0;
+    width: rem(20);
+    height: rem(20);
+    margin: 0;
+    accent-color: var(--color-primary);
+  }
+
+  &__error {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent-strong);
+    background: var(--color-bg);
+    border-left: 4px solid var(--color-accent-strong);
+  }
+
+  // 広告のオレンジのボタンと見分けられるよう、紺色の丸ボタンにする
+  &__submit {
+    @include pill-button;
+
+    justify-self: center;
+    min-width: min(100%, rem(280));
+    font: inherit;
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    border: 0;
+
+    @include hover {
+      background: var(--color-primary);
+    }
+  }
+
+  // ---- 結果 ----
+  &__result-title {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+  }
+
+  & &__ranking {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-bg);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+
+    @include mq(md) {
+      padding: var(--space-6);
+    }
+
+    &--top {
+      border-color: var(--color-accent); // UI の枠線なので 3:1 以上で足りる
+    }
+  }
+
+  &__rank {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-muted);
+  }
+
+  &__card--top &__rank {
+    color: var(--color-accent-strong);
+  }
+
+  &__name {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+  }
+
+  &__summary {
+    margin: 0;
+    font-size: var(--font-size-sm);
+  }
+
+  &__reasons-title {
+    margin: var(--space-2) 0 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+  }
+
+  & &__reasons {
+    margin: 0;
+    padding-left: 1.5em;
+    font-size: var(--font-size-sm);
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: center;
+    margin-top: var(--space-2);
+  }
+
+  // AffiliateLink（Astro の scoped style。詳細度 0,2,0）より強くするため 0,3,0 で書く
+  & &__actions .affiliate-link--button {
+    width: 100%;
+    max-width: rem(400);
+    padding-inline: var(--space-4);
+    text-align: center;
+  }
+
+  &__review {
+    display: inline-flex;
+    align-items: center;
+    min-height: rem(44);
+    font-size: var(--font-size-sm);
+  }
+
+  &__notes {
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg);
+    border-left: 4px solid var(--color-accent);
+  }
+
+  &__notes-title {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+  }
+
+  & &__notes-list {
+    margin: var(--space-1) 0 0;
+    padding-left: 1.5em;
+    font-size: var(--font-size-sm);
+  }
+
+  &__disclaimer {
+    margin: var(--space-4) 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  &__retry {
+    @include pill-button;
+
+    display: flex;
+    margin: var(--space-6) auto 0;
+    font: inherit;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary-dark);
+    cursor: pointer;
+    background: var(--color-bg);
+    border: 2px solid var(--color-primary-dark);
+
+    @include hover {
+      color: #fff;
+      background: var(--color-primary-dark);
+    }
+  }
+}

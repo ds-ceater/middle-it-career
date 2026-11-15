@@ -1,8 +1,13 @@
 ---
 // Figma: service（おすすめのIT転職サービスを比較する）
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import IconChevron from '@/assets/icons/icon-chevron-right.svg';
 import serviceImage from '@/assets/images/top-service.jpg';
+import serviceImagePc from '@/assets/images/top-service_pc.jpg';
+
+// PC（lg 以上）は写真が左の「人気のサービス」の高さまで縦に伸びるので、縦長の写真（1000×1608）に差し替える。
+// 表示は最大 約450×740px。高解像度の画面（2倍）向けに 1000px 幅まで用意する
+const serviceImagePcSet = await getImage({ src: serviceImagePc, widths: [500, 1000], format: 'webp' });
 
 interface RankingItem {
   name: string;
@@ -57,15 +62,28 @@ const rankingHref: string | undefined = '/articles/it-recruitment-services-ranki
             })
           }
         </ol>
+        <p class="service__diagnosis">
+          どれが合うか迷ったら
+          <a class="service__diagnosis-link" href="/diagnosis/">4つの質問でわかる転職エージェント診断</a>
+        </p>
       </div>
       <div class="service__visual">
-        <Image
-          class="service__img"
-          src={serviceImage}
-          alt=""
-          widths={[400, 700, 1016]}
-          sizes="(width >= 1024px) 508px, 100vw"
-        />
+        {/* 画面幅で写真を切り替える。media の 1024px は _breakpoints.scss の lg（HTML 属性なので mq() が使えない） */}
+        <picture class="service__picture">
+          <source
+            media="(width >= 1024px)"
+            srcset={serviceImagePcSet.srcSet.attribute}
+            sizes="(width >= 1264px) 450px, 36vw"
+            type="image/webp"
+          />
+          <Image
+            class="service__img"
+            src={serviceImage}
+            alt=""
+            widths={[400, 700, 1016, 1408]}
+            sizes="100vw"
+          />
+        </picture>
       </div>
     </div>
 
@@ -177,9 +195,32 @@ const rankingHref: string | undefined = '/articles/it-recruitment-services-ranki
       @include soon-badge;
     }
 
+    &__diagnosis {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 var(--space-2);
+      align-items: center;
+      margin-top: var(--space-4);
+      color: var(--color-primary-dark);
+    }
+
+    // タップ領域 44px 以上
+    &__diagnosis-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: rem(44);
+      font-weight: var(--font-weight-bold);
+    }
+
     &__visual {
       overflow: hidden;
       border-radius: var(--radius-lg);
+    }
+
+    // picture は初期値がインライン要素なので、ブロックにして写真の高さ（100%）の基準にする
+    &__picture {
+      display: block;
+      height: 100%;
     }
 
     &__img {
@@ -192,8 +233,10 @@ const rankingHref: string | undefined = '/articles/it-recruitment-services-ranki
         aspect-ratio: 16 / 9;
       }
 
+      // PC は縦長の写真。左の枠が伸びて細長く切り抜かれても、左寄りにいる人物が外れないようにする
       @include mq(lg) {
         aspect-ratio: auto;
+        object-position: 30% 50%;
       }
     }
 

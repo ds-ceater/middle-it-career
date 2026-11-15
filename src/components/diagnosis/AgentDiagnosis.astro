@@ -1,0 +1,31 @@
+---
+// 転職エージェント診断の入口（MDX では <AgentDiagnosis />、.astro では import して使う）
+// - 画面と操作は React（AgentDiagnosisApp.tsx）。判定ロジックとデータは src/lib/diagnosis.ts
+// - 公式サイトのボタンは CLAUDE.md のルールどおり AffiliateLink で作り、名前付きスロットで React に渡す。
+//   React 側は「どのボタンをどこに出すか」を選ぶだけなので、広告 URL や rel="sponsored" の扱いは AffiliateLink に一本化される
+// - client:visible：診断が画面に入ったときに初めて React の JS を読み込む（ページの表示速度を落とさない）
+// - 広告を含むので、置いたページには PR 表記が必要（記事は frontmatter の pr: true）
+import AffiliateLink from '@/components/AffiliateLink.astro';
+import AgentDiagnosisApp from './AgentDiagnosisApp';
+import { SERVICES } from '@/lib/diagnosis';
+
+interface Props {
+  /** 枠の上のタイトル（省略時は「転職エージェント診断」） */
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<AgentDiagnosisApp client:visible title={title}>
+  {
+    SERVICES.map((service) => (
+      <AffiliateLink slot={service.id} id={service.affiliateId} variant="button" newTab>
+        {service.name}の公式サイトを見る
+      </AffiliateLink>
+    ))
+  }
+</AgentDiagnosisApp>
+<noscript>
+  <p>転職エージェント診断を利用するには、ブラウザの JavaScript を有効にしてください。</p>
+</noscript>

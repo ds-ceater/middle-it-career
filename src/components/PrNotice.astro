@@ -1,10 +1,16 @@
 ---
 // ステマ規制（景品表示法）対応：記事冒頭に広告である旨を明示する
+interface Props {
+  /** 記事以外のページで使うときは「本ページ」などに変える */
+  subject?: string;
+}
+
+const { subject = '本記事' } = Astro.props;
 ---
 
 <p class="pr-notice">
   <span class="pr-notice__label">PR</span>
-  本記事にはプロモーション（広告）が含まれています。
+  {subject}にはプロモーション（広告）が含まれています。
 </p>
 
 <style lang="scss">

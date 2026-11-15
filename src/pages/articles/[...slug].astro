@@ -4,6 +4,7 @@ import ArticleLayout from '@/layouts/ArticleLayout.astro';
 import AffiliateLink from '@/components/AffiliateLink.astro';
 import PrNotice from '@/components/PrNotice.astro';
 import RecommendBox from '@/components/RecommendBox.astro';
+import AgentDiagnosis from '@/components/diagnosis/AgentDiagnosis.astro';
 import { getPublishedArticles, getRelatedArticles } from '@/lib/articles';
 
 export async function getStaticPaths() {
@@ -19,9 +20,11 @@ const { entry, related } = Astro.props;
 // 広告リンクがあるのに PR 表記がない記事はビルドを止める（ステマ規制対策）
 // MDX のコメント {/* … */} の中に書いた例は対象外
 const bodyWithoutComments = entry.body?.replace(/\{\/\*[\s\S]*?\*\/\}/g, '') ?? '';
-// RecommendBox も中で AffiliateLink を出すので同じ扱い
-if (/<(AffiliateLink|RecommendBox)\b/.test(bodyWithoutComments) && !entry.data.pr) {
-  throw new Error(`${entry.id}: AffiliateLink / RecommendBox を使う記事は frontmatter に pr: true が必要です`);
+// RecommendBox・AgentDiagnosis も中で AffiliateLink を出すので同じ扱い
+if (/<(AffiliateLink|RecommendBox|AgentDiagnosis)\b/.test(bodyWithoutComments) && !entry.data.pr) {
+  throw new Error(
+    `${entry.id}: AffiliateLink / RecommendBox / AgentDiagnosis を使う記事は frontmatter に pr: true が必要です`,
+  );
 }
 
 const { Content } = await render(entry);
@@ -29,5 +32,5 @@ const { Content } = await render(entry);
 
 <ArticleLayout entry={entry} related={related}>
   {/* MDX 内で import なしに使えるコンポーネント */}
-  <Content components={{ AffiliateLink, PrNotice, RecommendBox }} />
+  <Content components={{ AffiliateLink, PrNotice, RecommendBox, AgentDiagnosis }} />
 </ArticleLayout>

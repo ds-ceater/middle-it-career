@@ -1,0 +1,22 @@
+---
+// 転職エージェント診断の専用ページ（/diagnosis/）
+import PageLayout from '@/layouts/PageLayout.astro';
+import PrNotice from '@/components/PrNotice.astro';
+import AgentDiagnosis from '@/components/diagnosis/AgentDiagnosis.astro';
+---
+
+<PageLayout
+  title="転職エージェント診断"
+  description="4つの質問に答えるだけで、＠PRO人・TechGO・TechClipsエージェントの3社から、あなたに合うIT専門の転職エージェントがわかります。40代・50代のITエンジニアの転職に。"
+>
+  <PrNotice subject="本ページ" />
+  <p>
+    IT専門の転職エージェントは、得意な求人や担当者のサポートの仕方がそれぞれ違います。今のお仕事や転職でかなえたいことなど、4つの質問に答えると、3社をあなたに合う順に表示します。
+  </p>
+  <AgentDiagnosis title="4つの質問で診断する" />
+  <p>
+    各社の特徴を表で比べたい方は、<a href="/articles/it-specialist-recruitment-agents/"
+      >40代・50代向けIT専門転職エージェントの比較</a
+    >をご覧ください。
+  </p>
+</PageLayout>
