@@ -6,8 +6,14 @@ import serviceImage from '@/assets/images/top-service.jpg';
 import serviceImagePc from '@/assets/images/top-service_pc.jpg';
 
 // PC（lg 以上）は写真が左の「人気のサービス」の高さまで縦に伸びるので、縦長の写真（1000×1608）に差し替える。
-// 表示は最大 約450×740px。高解像度の画面（2倍）向けに 1000px 幅まで用意する
-const serviceImagePcSet = await getImage({ src: serviceImagePc, widths: [500, 1000], format: 'webp' });
+// 表示は最大 約450×740px。高解像度の画面（2倍）向けに 1000px 幅まで用意する。
+// 縦に引き伸ばし気味に表示されるので、細部が粗く見えないよう画質を既定より上げる
+const serviceImagePcSet = await getImage({
+  src: serviceImagePc,
+  widths: [500, 1000],
+  format: 'webp',
+  quality: 90,
+});
 
 interface RankingItem {
   name: string;
@@ -233,10 +239,10 @@ const rankingHref: string | undefined = '/articles/it-recruitment-services-ranki
         aspect-ratio: 16 / 9;
       }
 
-      // PC は縦長の写真。左の枠が伸びて細長く切り抜かれても、左寄りにいる人物が外れないようにする
+      // PC は縦長の写真。左右の両端に人物がいるので、細長く切り抜かれても左右均等に削れるよう中央基準にする
       @include mq(lg) {
         aspect-ratio: auto;
-        object-position: 30% 50%;
+        object-position: 50% 50%;
       }
     }
 
