@@ -25,12 +25,12 @@ export async function assertTopicSlugsExist() {
 }
 
 // どの記事にも付いていて、関連度の判定に役立たないタグ
-const GENERIC_TAGS = new Set(['40代', '50代', '転職']);
+const GENERIC_TAGS = new Set(['30代', '40代', '50代', '転職']);
 
 /**
  * 関連記事を選ぶ。点数の高い順（同点なら新しい順）に limit 件。
  * - 同じテーマ（topics.ts）：+3
- * - 共通のタグ（「40代」「50代」「転職」を除く）：1つにつき +1
+ * - 共通のタグ（「30代」「40代」「50代」「転職」を除く）：1つにつき +1
  * - 同じ category：+1
  */
 export function getRelatedArticles(current: Article, articles: Article[], limit = 4): Article[] {

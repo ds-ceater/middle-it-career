@@ -21,7 +21,7 @@ export const TOPICS = [
   {
     id: 'service-comparison',
     title: '転職サービス比較',
-    lead: '40代・50代のIT転職に役立つ転職エージェント・転職サービスを比較します。',
+    lead: '30代〜50代のIT転職に役立つ転職エージェント・転職サービスを比較します。',
     articles: [
       'it-recruitment-services-ranking',
       'it-specialist-recruitment-agents',
@@ -36,8 +36,9 @@ export const TOPICS = [
   {
     id: 'age-guide',
     title: '年代別キャリアガイド',
-    lead: '40代・50代・55歳以降、それぞれの年代に合ったIT転職・キャリアの考え方を解説します。',
+    lead: '30代・40代・50代・55歳以降、それぞれの年代に合ったIT転職・キャリアの考え方を解説します。',
     articles: [
+      '30s-it-career-guide',
       '40s-it-career-guide',
       '50s-it-career-guide',
       'it-career-after-55',

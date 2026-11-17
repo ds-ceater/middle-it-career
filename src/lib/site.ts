@@ -1,6 +1,6 @@
 export const SITE = {
   name: 'ミドルITキャリア',
-  description: 'ミドル世代のIT職の転職を、現場経験者の視点で解説する転職情報サイト。', // TODO: 確定文言に
+  description: '30代〜50代のミドル世代のIT職の転職を、現場経験者の視点で解説する転職情報サイト。',
   locale: 'ja_JP',
   lang: 'ja',
   ogImage: '/og-default.png', // TODO: public/ に 1200x630 で配置
@@ -8,11 +8,11 @@ export const SITE = {
 } as const;
 
 // グローバルナビ（Figma: header__nav）。テーマ別の一覧ページ（src/lib/topics.ts）へのリンク。
-// 40代・50代は一覧ページがないため、それぞれの年代別ガイド記事へリンクする
+// 年代別は、トップの「年代別の転職ガイド」（30代〜55歳以降のカード）へのページ内リンク。
+// 先頭に / を付けて、トップ以外のページからでも飛べるようにする
 export const NAV = [
   { href: '/category/service-comparison/', label: '転職サービス比較' },
-  { href: '/articles/40s-it-career-guide/', label: '40代の転職' },
-  { href: '/articles/50s-it-career-guide/', label: '50代の転職' },
+  { href: '/#age-guide', label: '年代別の転職ガイド' },
   { href: '/category/job-guide/', label: '職種別キャリア' },
   { href: '/category/knowhow/', label: '転職ノウハウ' },
 ] as const;

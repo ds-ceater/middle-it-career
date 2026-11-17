@@ -1,6 +1,7 @@
 ---
 // Figma: age-guide（年代別の転職ガイド）
-// 各カードの id はヘッダーナビ・メインビジュアルからのページ内リンク先
+// セクションの id="age-guide" はヘッダーナビからのページ内リンク先（src/lib/site.ts の NAV）
+// 各カードの id はメインビジュアルの年代別ボタン（現在は非表示）からのページ内リンク先
 interface Card {
   id: string;
   num: string;
@@ -12,13 +13,14 @@ interface Card {
 
 // 記事ができたら href を追加する
 const cards: Card[] = [
+  { id: 'age-30', num: '30', rest: '代の転職', desc: '専門性を磨き、次の10年へ', href: '/articles/30s-it-career-guide/' },
   { id: 'age-40', num: '40', rest: '代の転職', desc: '経験と専門性を活かす', href: '/articles/40s-it-career-guide/' },
   { id: 'age-50', num: '50', rest: '代の転職', desc: '実績と強みを即戦力にする', href: '/articles/50s-it-career-guide/' },
   { id: 'age-55', num: '55', rest: '歳からのキャリア', desc: '再就職・独立を視野に', href: '/articles/it-career-after-55/' },
 ];
 ---
 
-<section class="age-guide" aria-labelledby="age-guide-title">
+<section class="age-guide" id="age-guide" aria-labelledby="age-guide-title">
   <div class="age-guide__inner container">
     <h2 class="age-guide__title" id="age-guide-title">年代別の転職ガイド</h2>
     <p class="age-guide__lead">年齢に応じた戦略で、次のキャリアを見つけましょう。</p>
@@ -64,9 +66,14 @@ const cards: Card[] = [
       padding: 0;
       list-style: none;
 
+      // タブレット：2列 × 2段
+      @include mq(md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      // PC：4枚を横一列に並べる（カード幅は 約220〜280px）
       @include mq(lg) {
-        grid-template-columns: repeat(3, 1fr);
-        gap: var(--space-8);
+        grid-template-columns: repeat(4, 1fr);
       }
     }
 
@@ -78,18 +85,32 @@ const cards: Card[] = [
       border: 3px solid var(--color-border-light);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-card);
+
+      // PC は4列でカードが細いので、左右の余白を詰める
+      @include mq(lg) {
+        padding-inline: var(--space-4);
+      }
     }
 
     &__card-title {
       font-size: #{fluid(22, 30)};
       font-weight: var(--font-weight-bold);
       color: var(--color-primary-dark);
+
+      // PC：「55歳からのキャリア」が細いカードに収まる大きさ
+      @include mq(lg) {
+        font-size: rem(20);
+      }
     }
 
     &__card-num {
       font-size: #{fluid(34, 46)};
       font-weight: var(--font-weight-black);
       line-height: 1;
+
+      @include mq(lg) {
+        font-size: rem(36);
+      }
     }
 
     &__card-desc {
@@ -97,6 +118,10 @@ const cards: Card[] = [
       font-size: #{fluid(16, 22)};
       font-weight: var(--font-weight-medium);
       color: var(--color-text);
+
+      @include mq(lg) {
+        font-size: var(--font-size-base);
+      }
     }
 
     &__card-btn {

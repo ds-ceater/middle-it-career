@@ -16,8 +16,8 @@ interface Item {
 }
 
 // 記事ができたら href を追加する
+// 並び順：30代〜50代の誰にでも当てはまる悩みを先に、年代を限る悩み（50代・役職定年）を後ろに
 const items: Item[] = [
-  { Icon: IconAge, label: ['50代でも', '転職できる？'], href: '/articles/50s-it-career-change/' },
   {
     Icon: IconSalary,
     label: ['今の年収を維持して', '転職できる？'],
@@ -38,6 +38,7 @@ const items: Item[] = [
     label: ['転職とフリーランス、', 'どちらがいい？'],
     href: '/articles/career-change-vs-freelancing/',
   },
+  { Icon: IconAge, label: ['50代でも', '転職できる？'], href: '/articles/50s-it-career-change/' },
   {
     Icon: IconRetirement,
     label: ['役職定年後のキャリアを', '考えたい'],
