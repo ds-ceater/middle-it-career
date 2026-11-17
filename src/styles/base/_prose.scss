@@ -12,7 +12,7 @@
   h2 {
     margin-top: var(--space-16);
     padding-bottom: var(--space-2);
-    font-size: var(--font-size-h2);
+    font-size: var(--font-size-prose-h2); // h1（26〜36px）より小さく
     border-bottom: 2px solid var(--color-primary);
   }
 

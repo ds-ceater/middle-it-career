@@ -30,6 +30,7 @@
   --font-size-base: #{rem(16)};
   --font-size-lg: #{fluid(18, 20)};
   --font-size-prose: #{fluid(17, 18)}; // 記事本文
+  --font-size-prose-h2: #{fluid(22, 26)}; // 記事・固定ページ本文の h2（h1 より小さく、h3 より大きく）
   --font-size-prose-h3: #{fluid(20, 22)}; // 記事本文の h3
   --font-size-lead: #{fluid(16, 22)}; // セクションのリード文
   --font-size-h2: #{fluid(22, 40)};
