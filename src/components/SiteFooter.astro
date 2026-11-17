@@ -74,10 +74,24 @@ const contentNav = [
     &__logo {
       display: block;
       padding-block: var(--space-2);
+
+      // PC は左上に置き、右のナビの1行目の文字と上端をそろえる。
+      // ナビの文字は高さ 48px のリンクの中で上下中央にあるため、その分ロゴの上の余白を広げる
+      @include mq(md) {
+        align-self: start;
+        padding-top: var(--space-4);
+      }
     }
 
     &__logo-img {
+      display: block;
       width: rem(254);
+      height: auto; // SVG の height="28" を打ち消し、幅に合わせて縦横比のまま縮める
+
+      // PC は 254px の約70%
+      @include mq(md) {
+        width: rem(178);
+      }
     }
 
     &__navs {

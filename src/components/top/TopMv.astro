@@ -17,12 +17,13 @@ import mvImage from '@/assets/images/top-mv.png';
   />
   <div class="mv__body container">
     <h1 class="mv__title" id="mv-title">
-      <span>40代・50代の</span><span>IT人材に、</span><span>次のキャリアを。</span>
+      <span>ミドル世代の</span><span>IT人材に、</span><span>次のキャリアを。</span>
     </h1>
+    {/* 見出しの「ミドル世代」が何歳かを、リード文の1行目で補う */}
     <p class="mv__lead">
-      <span>これまで培った技術と経験を活かし、</span><span>あなたに合った転職先を見つけるための</span><span
-        >情報をお届けします。</span
-      >
+      <span><span>30代〜50代のIT職の方が、</span><span>培った技術と経験を活かし、</span></span><span
+        >あなたに合った転職先を見つけるための</span
+      ><span>情報をお届けします。</span>
     </p>
     <a class="mv__cta" href="#service">
       <span class="mv__cta-text-pc">おすすめのIT転職サービスを比較する</span>
@@ -102,13 +103,13 @@ import mvImage from '@/assets/images/top-mv.png';
       line-height: 1.35;
       color: var(--color-primary-dark);
 
-      // 意味の区切りでだけ改行させる（SP：「…IT人材に、／次の…」 PC：「…50代の／IT人材に、…」）
+      // 意味の区切りでだけ改行させる（SP：幅に応じて「ミドル世代の／IT人材に、／次の…」 PC：「…IT人材に、／次のキャリアを。」）
       span {
         display: inline-block;
       }
 
       @include mq(md) {
-        span:first-child {
+        span:last-child {
           display: block;
         }
       }
@@ -121,12 +122,14 @@ import mvImage from '@/assets/images/top-mv.png';
       line-height: 1.75;
       color: var(--color-text);
 
+      // SP：意味の区切りでだけ改行（入れ子の span も含めてすべて inline-block）
       span {
         display: inline-block;
       }
 
+      // PC：直下の span ごとに1行（1行目は入れ子の2つの span を横に並べる）
       @include mq(md) {
-        span {
+        > span {
           display: block;
         }
       }
