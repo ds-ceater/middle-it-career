@@ -4,7 +4,7 @@ export const SITE = {
   locale: 'ja_JP',
   lang: 'ja',
   ogImage: '/og-default.png', // TODO: public/ に 1200x630 で配置
-  author: 'ミドルITキャリア編集部',
+  author: 'ミドルITキャリア運営者',
 } as const;
 
 // グローバルナビ（Figma: header__nav）。テーマ別の一覧ページ（src/lib/topics.ts）へのリンク。
@@ -24,6 +24,7 @@ export const FOOTER_NAV = [
   { href: '/contact/', label: 'お問い合わせ' },
   { href: '/privacy/', label: 'プライバシーポリシー' },
   { href: '/privacy/#広告の掲載について', label: '広告掲載について' },
+  { href: '/policy/', label: '記事の作成方針・ランキングの基準' },
 ] as const;
 
 export const CATEGORIES = ['転職サイト', '転職エージェント', 'ノウハウ'] as const;

@@ -163,5 +163,13 @@ const contentNav = [
         grid-column: 2;
       }
     }
+
+    // 注釈は SP でも左揃え。改行したら2行目以降を「※」1文字分下げる（ぶら下げインデント）
+    &__note {
+      justify-self: stretch; // 親の justify-items: center を打ち消して横幅いっぱいに
+      padding-left: 1em;
+      text-align: left;
+      text-indent: -1em;
+    }
   }
 </style>
