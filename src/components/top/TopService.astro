@@ -27,9 +27,6 @@ const ranking: RankingItem[] = [
   { name: 'ミドル・ハイクラス向け', href: '/articles/mid-career-executive-recruitment-services/' },
   { name: '管理職・PM向け', href: '/articles/management-project-manager-recruitment-agents/' },
   { name: 'フリーランス向け', href: '/articles/freelance-agents-for-mid-career/' },
-  { name: '＠PRO人の評判・口コミ', href: '/articles/at-pro-jin-review/' },
-  { name: 'TechClipsエージェントの評判・口コミ', href: '/articles/techclips-agent-review/' },
-  { name: 'TechGO（テックゴー）の評判・口コミ', href: '/articles/techgo-agent-review/' },
 ];
 
 /** 「転職サービス比較ランキングを見る」のリンク先。未設定なら押せないボタンで「準備中」 */
@@ -221,12 +218,24 @@ const rankingHref: string | undefined = '/articles/it-recruitment-services-ranki
     &__visual {
       overflow: hidden;
       border-radius: var(--radius-lg);
+
+      // PC は写真の基準にする（写真は下の __picture で絶対配置）
+      @include mq(lg) {
+        position: relative;
+      }
     }
 
     // picture は初期値がインライン要素なので、ブロックにして写真の高さ（100%）の基準にする
     &__picture {
       display: block;
       height: 100%;
+
+      // PC は写真を行の高さの計算から外す。行の高さは左の「人気のサービス」で決まり、
+      // 写真はその高さに合わせて object-fit: cover でトリミングされる
+      @include mq(lg) {
+        position: absolute;
+        inset: 0;
+      }
     }
 
     &__img {
