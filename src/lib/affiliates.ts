@@ -5,6 +5,8 @@ interface AffiliateItem {
   pixel?: string;
   /** バナー広告の画像（variant="banner" で使う） */
   banner?: { src: string; width: number; height: number; alt: string };
+  /** ASP がリンク・画像に referrerpolicy の指定を求める場合（アクセストレードなど） */
+  referrerPolicy?: ReferrerPolicy;
 }
 
 // アフィリエイト案件の一元管理。ASP の審査通過後に URL を差し替える。
@@ -185,6 +187,44 @@ export const AFFILIATES = {
       width: 468,
       height: 60,
       alt: 'ITエンジニア専門の転職エージェントTechClipsエージェント公式サイト',
+    },
+  },
+  // エンワールド（IT・SaaS向け）：アクセストレード。バナー画像の読み込みで表示回数を計測するので、1px 画像はない。
+  // ASP の指定どおり referrerpolicy="no-referrer-when-downgrade" を付ける
+  'enworld-banner-300x250': {
+    label: 'エンワールド',
+    url: 'https://h.accesstrade.net/sp/cc?rk=0100ong600p30t',
+    asp: 'アクセストレード',
+    referrerPolicy: 'no-referrer-when-downgrade',
+    banner: {
+      src: 'https://h.accesstrade.net/sp/rr?rk=0100ong600p30t',
+      width: 300,
+      height: 250,
+      alt: '転職エージェント エンワールド（IT・SaaS向け）公式サイト',
+    },
+  },
+  'enworld-banner-320x50': {
+    label: 'エンワールド',
+    url: 'https://h.accesstrade.net/sp/cc?rk=0100ong700p30t',
+    asp: 'アクセストレード',
+    referrerPolicy: 'no-referrer-when-downgrade',
+    banner: {
+      src: 'https://h.accesstrade.net/sp/rr?rk=0100ong700p30t',
+      width: 320,
+      height: 50,
+      alt: '転職エージェント エンワールド（IT・SaaS向け）公式サイト',
+    },
+  },
+  'enworld-banner-468x60': {
+    label: 'エンワールド',
+    url: 'https://h.accesstrade.net/sp/cc?rk=0100ong800p30t',
+    asp: 'アクセストレード',
+    referrerPolicy: 'no-referrer-when-downgrade',
+    banner: {
+      src: 'https://h.accesstrade.net/sp/rr?rk=0100ong800p30t',
+      width: 468,
+      height: 60,
+      alt: '転職エージェント エンワールド（IT・SaaS向け）公式サイト',
     },
   },
 } as const satisfies Record<string, AffiliateItem>;

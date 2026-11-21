@@ -13,6 +13,10 @@ interface Props {
 const { id, variant = 'text', newTab = false } = Astro.props;
 const item = AFFILIATES[id];
 const banner = 'banner' in item ? item.banner : undefined;
+// ASP 指定の referrerpolicy（アクセストレードなど）。リンクとバナー画像の両方に付ける
+const referrerPolicy = 'referrerPolicy' in item ? item.referrerPolicy : undefined;
+// 計測用 1px 画像。アクセストレードのようにバナー画像で計測する ASP にはない
+const pixel = 'pixel' in item ? item.pixel : undefined;
 if (variant === 'banner' && !banner) {
   throw new Error(`AffiliateLink: "${id}" にはバナー画像が登録されていません（src/lib/affiliates.ts）`);
 }
@@ -23,6 +27,7 @@ if (variant === 'banner' && !banner) {
   href={item.url}
   rel={newTab ? 'sponsored noopener' : 'sponsored'}
   target={newTab ? '_blank' : undefined}
+  referrerpolicy={referrerPolicy}
   data-affiliate-id={id}
   data-affiliate-variant={variant}
 >
@@ -35,6 +40,7 @@ if (variant === 'banner' && !banner) {
         height={banner.height}
         alt={banner.alt}
         loading="lazy"
+        referrerpolicy={referrerPolicy}
       />
     ) : (
       <slot>{item.label}</slot>
@@ -43,7 +49,7 @@ if (variant === 'banner' && !banner) {
   {newTab && <span class="visually-hidden">（新しいタブで開きます）</span>}
 </a>
 {/* ASP 指定の計測用 1px 画像がある場合 */}
-{item.pixel && <img src={item.pixel} width="1" height="1" alt="" loading="lazy" class="affiliate-link__pixel" />}
+{pixel && <img src={pixel} width="1" height="1" alt="" loading="lazy" class="affiliate-link__pixel" />}
 
 <script>
   // 広告クリックを GTM（dataLayer）に通知する。GTM 側で「affiliate_click」をトリガーに GA4 へ送る。
