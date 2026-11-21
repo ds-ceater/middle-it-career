@@ -49,7 +49,19 @@ if (variant === 'banner' && !banner) {
   {newTab && <span class="visually-hidden">（新しいタブで開きます）</span>}
 </a>
 {/* ASP 指定の計測用 1px 画像がある場合 */}
-{pixel && <img src={pixel} width="1" height="1" alt="" loading="lazy" class="affiliate-link__pixel" />}
+{
+  pixel && (
+    <img
+      src={pixel}
+      width="1"
+      height="1"
+      alt=""
+      loading="lazy"
+      referrerpolicy={referrerPolicy}
+      class="affiliate-link__pixel"
+    />
+  )
+}
 
 <script>
   // 広告クリックを GTM（dataLayer）に通知する。GTM 側で「affiliate_click」をトリガーに GA4 へ送る。

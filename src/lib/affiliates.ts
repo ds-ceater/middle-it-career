@@ -227,6 +227,58 @@ export const AFFILIATES = {
       alt: '転職エージェント エンワールド（IT・SaaS向け）公式サイト',
     },
   },
+  // パーソルクロステクノロジー フリーランスサービス：アクセストレード。
+  // テキストは 1px 画像、バナーはバナー画像の読み込みで表示回数を計測する。素材ごとに別 ID（成果を素材別に計測するため）
+  'persol-xtech-freelance': {
+    label: 'パーソルクロステクノロジー フリーランス',
+    url: 'https://h.accesstrade.net/sp/cc?rk=0100ppts00p30t',
+    asp: 'アクセストレード',
+    pixel: 'https://h.accesstrade.net/sp/rr?rk=0100ppts00p30t',
+    referrerPolicy: 'no-referrer-when-downgrade',
+  },
+  'persol-xtech-freelance-engineer': {
+    label: 'ITエンジニア フリーランス',
+    url: 'https://h.accesstrade.net/sp/cc?rk=0100pptr00p30t',
+    asp: 'アクセストレード',
+    pixel: 'https://h.accesstrade.net/sp/rr?rk=0100pptr00p30t',
+    referrerPolicy: 'no-referrer-when-downgrade',
+  },
+  'persol-xtech-freelance-banner-300x250': {
+    label: 'パーソルクロステクノロジー フリーランスサービス',
+    url: 'https://h.accesstrade.net/sp/cc?rk=0100ppto00p30t',
+    asp: 'アクセストレード',
+    referrerPolicy: 'no-referrer-when-downgrade',
+    banner: {
+      src: 'https://h.accesstrade.net/sp/rr?rk=0100ppto00p30t',
+      width: 300,
+      height: 250,
+      alt: 'パーソルクロステクノロジー フリーランスサービス公式サイト',
+    },
+  },
+  'persol-xtech-freelance-banner-320x50': {
+    label: 'パーソルクロステクノロジー フリーランスサービス',
+    url: 'https://h.accesstrade.net/sp/cc?rk=0100pptp00p30t',
+    asp: 'アクセストレード',
+    referrerPolicy: 'no-referrer-when-downgrade',
+    banner: {
+      src: 'https://h.accesstrade.net/sp/rr?rk=0100pptp00p30t',
+      width: 320,
+      height: 50,
+      alt: 'パーソルクロステクノロジー フリーランスサービス公式サイト',
+    },
+  },
+  'persol-xtech-freelance-banner-468x60': {
+    label: 'パーソルクロステクノロジー フリーランスサービス',
+    url: 'https://h.accesstrade.net/sp/cc?rk=0100pptq00p30t',
+    asp: 'アクセストレード',
+    referrerPolicy: 'no-referrer-when-downgrade',
+    banner: {
+      src: 'https://h.accesstrade.net/sp/rr?rk=0100pptq00p30t',
+      width: 468,
+      height: 60,
+      alt: 'パーソルクロステクノロジー フリーランスサービス公式サイト',
+    },
+  },
 } as const satisfies Record<string, AffiliateItem>;
 
 export type AffiliateId = keyof typeof AFFILIATES;
