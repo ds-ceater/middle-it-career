@@ -50,7 +50,8 @@ export const SERVICES: readonly Service[] = [
     // アクセストレード。外資系向けの「エンワールド」とは別のプログラム（IT・SaaS系の日系成長企業向け）
     id: 'enworld',
     name: 'エンワールド（IT・SaaS向け）',
-    affiliateId: 'enworld-banner-300x250',
+    // 結果のカードの中で目立ちすぎないよう、小さいバナー（320×50）にする
+    affiliateId: 'enworld-banner-320x50',
     affiliateVariant: 'banner',
     detailHref: '/articles/it-specialist-recruitment-agents/#10-エンワールドitsaas向け',
     summary: 'IT・SaaS系の成長企業（日系）への転職を支援。経営層とのつながりを活かし、将来性のある企業を紹介',
