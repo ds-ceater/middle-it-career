@@ -5,6 +5,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode, type SubmitEvent } from 'react';
 import {
   QUESTIONS,
+  SERVICES,
   diagnose,
   findUnanswered,
   type Answers,
@@ -126,9 +127,18 @@ export default function AgentDiagnosisApp({ title = '転職エージェント診
 
                 <div className="agent-diagnosis__actions">
                   {ctaSlots[service.id]}
-                  <a className="agent-diagnosis__review" href={service.reviewHref}>
-                    {service.name}の評判・口コミを読む
-                  </a>
+                  {/* 評判記事があればそちら、なければ紹介している記事へ */}
+                  {service.reviewHref ? (
+                    <a className="agent-diagnosis__review" href={service.reviewHref}>
+                      {service.name}の評判・口コミを読む
+                    </a>
+                  ) : (
+                    service.detailHref && (
+                      <a className="agent-diagnosis__review" href={service.detailHref}>
+                        {service.name}の詳しい紹介を読む
+                      </a>
+                    )
+                  )}
                 </div>
               </li>
             ))}
@@ -156,7 +166,7 @@ export default function AgentDiagnosisApp({ title = '転職エージェント診
       ) : (
         <>
           <p className="agent-diagnosis__lead">
-            {QUESTIONS.length}つの質問に答えると、IT専門の転職エージェント3社を、あなたに合う順に表示します。
+            {QUESTIONS.length}つの質問に答えると、IT専門の転職エージェント{SERVICES.length}社を、あなたに合う順に表示します。
           </p>
 
           {/* noValidate：ブラウザ標準のエラー表示ではなく、下の独自のエラー表示を使う */}

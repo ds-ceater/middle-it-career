@@ -8,29 +8,14 @@ interface Props {
 const { subject = '本記事' } = Astro.props;
 ---
 
+{/* 目立たせすぎない灰色の小さい文字にする。ただし「広告」と分かる文言・読める大きさ・コントラスト比 4.5:1 以上は保つ（不明瞭な表示はステマ規制の対象になりうる） */}
 <p class="pr-notice">
-  <span class="pr-notice__label">PR</span>
-  {subject}にはプロモーション（広告）が含まれています。
+  PR：{subject}にはプロモーション（広告）が含まれています。
 </p>
 
 <style lang="scss">
   .pr-notice {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
-    background: var(--color-bg-subtle);
-    border-radius: var(--radius-sm);
-
-    &__label {
-      flex-shrink: 0;
-      padding: 0 var(--space-2);
-      font-weight: var(--font-weight-bold);
-      color: var(--color-bg);
-      background: var(--color-text-muted);
-      border-radius: var(--radius-sm);
-    }
   }
 </style>

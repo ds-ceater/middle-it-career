@@ -8,30 +8,38 @@ const order = (answers: Answers) => diagnose(answers).ranking.map((r) => r.servi
 
 describe('diagnose', () => {
   it('SIer・SESから年収アップ・面接対策重視なら TechGO が1位', () => {
-    // techgo: 1 + 2 + 2 = 5 / techclips: 2 + 1 = 3 / atpro: 1
+    // techgo: 1 + 2 + 2 = 5 / techclips: 2 + 1 = 3 / atpro: 1 / enworld: 0
     expect(order({ current: 'sier', goal: 'salary', support: 'interview', area: 'capital' })).toEqual([
       'techgo',
       'techclips',
       'atpro',
+      'enworld',
     ]);
   });
 
   it('キャリアを整理したい・丁寧な相談重視なら ＠PRO人 が1位', () => {
-    // atpro: 1 + 2 + 2 = 5 / techclips: 1 + 1 = 2 / techgo: 1
+    // atpro: 1 + 2 + 2 = 5 / techclips: 1 + 1 = 2 / techgo: 1 / enworld: 1（同点は SERVICES の並び順）
     expect(order({ current: 'company', goal: 'plan', support: 'careful', area: 'capital' })).toEqual([
       'atpro',
       'techclips',
       'techgo',
+      'enworld',
     ]);
   });
 
   it('SIer・SESから事業会社へ・技術の話が通じる担当者なら TechClips が1位', () => {
-    // techclips: 2 + 2 + 2 = 6 / techgo: 1 + 1 + 1 = 3 / atpro: 1
+    // techclips: 2 + 2 + 2 = 6 / techgo: 1 + 1 + 1 = 3 / atpro: 1 / enworld: 1
     expect(order({ current: 'sier', goal: 'company', support: 'tech', area: 'capital' })).toEqual([
       'techclips',
       'techgo',
       'atpro',
+      'enworld',
     ]);
+  });
+
+  it('事業会社から成長企業へ・企業の内情を知りたいなら エンワールド が1位', () => {
+    // enworld: 1 + 2 + 2 = 5 / atpro・techgo・techclips: 1
+    expect(order({ current: 'company', goal: 'growth', support: 'insider', area: 'capital' })[0]).toBe('enworld');
   });
 
   it('同点のときは SERVICES の並び順になる', () => {
@@ -83,6 +91,12 @@ describe('診断データの整合性', () => {
     }
   });
 
+  it('どのサービスにも、評判記事か紹介記事へのリンクがある', () => {
+    for (const service of SERVICES) {
+      expect(service.reviewHref ?? service.detailHref, service.id).toBeTruthy();
+    }
+  });
+
   it('選択肢 ID が質問の中で重複していない', () => {
     for (const q of QUESTIONS) {
       const ids = q.choices.map((c) => c.id);
@@ -102,7 +116,7 @@ describe('診断データの整合性', () => {
   });
 
   it('どのサービスも、いずれかの回答の組み合わせで単独1位になれる', () => {
-    // 全組み合わせ（3 × 4 × 3 × 3 = 108 通り）を試す。加点の調整で、ある会社が一度も1位にならなくなるのを防ぐ
+    // 全組み合わせ（3 × 5 × 4 × 3 = 180 通り）を試す。加点の調整で、ある会社が一度も1位にならなくなるのを防ぐ
     const combos = QUESTIONS.reduce<Answers[]>(
       (acc, q) => acc.flatMap((a) => q.choices.map((c) => ({ ...a, [q.id]: c.id }))),
       [{}],

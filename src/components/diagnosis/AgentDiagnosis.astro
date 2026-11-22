@@ -19,11 +19,16 @@ const { title } = Astro.props;
 
 <AgentDiagnosisApp client:visible title={title}>
   {
-    SERVICES.map((service) => (
-      <AffiliateLink slot={service.id} id={service.affiliateId} variant="button" newTab>
-        {service.name}の公式サイトを見る
-      </AffiliateLink>
-    ))
+    SERVICES.map((service) =>
+      // バナーだけの案件はバナーを出す（中の文字は使われない）
+      service.affiliateVariant === 'banner' ? (
+        <AffiliateLink slot={service.id} id={service.affiliateId} variant="banner" newTab />
+      ) : (
+        <AffiliateLink slot={service.id} id={service.affiliateId} variant="button" newTab>
+          {service.name}の公式サイトを見る
+        </AffiliateLink>
+      ),
+    )
   }
 </AgentDiagnosisApp>
 <noscript>

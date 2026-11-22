@@ -10,6 +10,7 @@ const slots = {
   atpro: <a href="https://example.com/atpro">＠PRO人の公式サイトを見る</a>,
   techgo: <a href="https://example.com/techgo">TechGOの公式サイトを見る</a>,
   techclips: <a href="https://example.com/techclips">TechClipsの公式サイトを見る</a>,
+  enworld: <a href="https://example.com/enworld">エンワールドの公式サイトを見る</a>,
 };
 
 function setup() {
@@ -59,6 +60,7 @@ describe('AgentDiagnosisApp', () => {
       'TechGO（テックゴー）',
       'TechClipsエージェント',
       '＠PRO人',
+      'エンワールド（IT・SaaS向け）',
     ]);
     // 1位のカードに、Astro から渡したボタン（スロット）と評判記事へのリンクがある
     expect(within(cards[0]).getByRole('link', { name: 'TechGOの公式サイトを見る' })).toBeInTheDocument();
